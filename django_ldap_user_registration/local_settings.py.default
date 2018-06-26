@@ -1,0 +1,8 @@
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+
+ANYMAIL = {
+        "MAILGUN_API_KEY": "<your key>",
+}
+
+DEFAULT_FROM_EMAIL = 'LDAP IDP <support@example.com>'
+
