@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% load crispy_forms_tags %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <h1>Federated ID Registration</h1>
+        <p>You are registering to the IDP X...</p>
+    </div>
+    <div class="row">
+        {% crispy form %}
+    </div>
+</div>
+
+</body>
+</html>

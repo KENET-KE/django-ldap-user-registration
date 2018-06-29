@@ -4,6 +4,8 @@ certifi==2018.4.16
 chardet==3.0.4
 Django==2.0.6
 django-anymail==3.0
+django-bootstrap3==10.0.1
+django-bootstrap4==0.0.6
 django-crispy-forms==1.7.2
 idna==2.7
 more-itertools==4.2.0

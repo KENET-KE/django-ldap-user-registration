@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user.apps.UserConfig',
     'anymail',
+    'crispy_forms',
+    'bootstrap3',
 ]
 
 MIDDLEWARE = [
