@@ -1,3 +1,13 @@
+# LDAP Settings
+
+LDAP_PROTO = 'ldap'
+LDAP_HOST = '127.0.0.1'
+LDAP_PORT = 389
+LDAP_BASE_DN = 'ou=users,dc=example,dc=ac,dc=ke'
+LDAP_BIND_DN = 'cn=admin,dc=example,dc=ac,dc=ke'
+LDAP_BIND_DN_CREDENTIAL = 'my password'
+LDAP_GID = "502" # group ID to add signed up users
+
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
 ANYMAIL = {
