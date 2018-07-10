@@ -26,7 +26,7 @@ class RegisterView(generic.FormView):
         query = "(uid=admin)"
         result = self.con.search_s('dc=zion,dc=co,dc=ke', ldap.SCOPE_SUBTREE, query)
         data = form.cleaned_data
-        full_name = data.get('username') + ' ' + data.get('last_name')
+        full_name = data.get('first_name') + ' ' + data.get('last_name')
         dn = 'uid=' + data.get('username') + ',' + settings.LDAP_BASE_DN
         modlist = {
             "objectClass": ["inetOrgPerson", "posixAccount", "shadowAccount"],
@@ -35,7 +35,9 @@ class RegisterView(generic.FormView):
             "givenName": [data.get('first_name')],
             "cn": [full_name],
             "displayName": [full_name],
-            "uidNumber": ["1001"],
+            "mail": [data.get('email')],
+            "homePhone": [data.get('phone')],
+            "uidNumber": ["1003"],
             "gidNumber": [settings.LDAP_GID],
             "loginShell": ["/bin/bash"],
             "homeDirectory": ["/home/users/" + data.get('username')]
