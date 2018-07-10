@@ -18,17 +18,17 @@ class UserRegistrationRecord(models.Model):
     # controls
     reset_code = models.CharField(max_length=255, default='')
     reset_code_active = models.BooleanField(default=False)
-    reset_code_expiry = models.DateTimeField()
+    reset_code_expiry = models.DateTimeField(blank=True)
 
     # user data
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    gender = models.CharField(max_length=10)
-    title = models.CharField(max_length=30)
-    designation = models.CharField(max_length=200)
-    organization = models.CharField(max_length=255)
-    phone = models.CharField(max_length=200)
-    address = models.TextField()
-    country = models.CharField(max_length=100)
+    gender = models.CharField(max_length=10, blank=True)
+    title = models.CharField(max_length=30, blank=True)
+    designation = models.CharField(max_length=200, blank=True)
+    organization = models.CharField(max_length=255, blank=True)
+    phone = models.CharField(max_length=200, blank=True)
+    address = models.TextField(blank=True)
+    country = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.user.username
