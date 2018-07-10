@@ -1,30 +1,27 @@
 from django import forms
 from django.core.validators import RegexValidator
+from django.contrib.auth.validators import UnicodeUsernameValidator
 
 from crispy_forms.bootstrap import Field, InlineRadios, TabHolder, Tab
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Div, Fieldset
 
+from .models import Institution
+
 
 class UserRegisterForm(forms.Form):
     title_choices = (('Mr.', 'Mr'), ('Ms', 'Ms',), ('Dr.', 'Dr.',),)
     country_choices = (('Kenya', 'Kenya'),)
-    organization_choices = (('kenet', 'KENET'),('other', 'Select other'),)
+
     first_name = forms.CharField(required=True, max_length=255)
     last_name = forms.CharField(required=True, max_length=255)
     email = forms.EmailField(required=True)
     title = forms.ChoiceField(required=False, choices=title_choices)
     designation = forms.CharField(max_length=200)
-    organization = forms.ChoiceField(required=True, choices=organization_choices)
+    organization = forms.ModelChoiceField(required=True, queryset=Institution.objects.all(),
+                                          empty_label='Select an organization', to_field_name='name')
     username = forms.CharField(required=True, min_length=3, max_length=30, help_text='Choose a memorable name e.g jdoe',
-                               validators=[
-                                   RegexValidator(
-                                       regex='^[a-zA-Z0-9_]+$',
-                                       message='Username must be Alphanumeric. Allowed chars [a-zA-Z0-9_]',
-                                       code='invalid_username'
-                                   ),
-                               ]
-                               )
+                               validators=[UnicodeUsernameValidator])
     password = forms.CharField(widget=forms.PasswordInput)
     password1 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
     phone = forms.CharField(required=True, max_length=200)

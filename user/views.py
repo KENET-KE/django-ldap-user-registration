@@ -23,8 +23,6 @@ class RegisterView(generic.FormView):
 
     def form_valid(self, form):
         self.ldap_connect()
-        query = "(uid=admin)"
-        result = self.con.search_s('dc=zion,dc=co,dc=ke', ldap.SCOPE_SUBTREE, query)
         data = form.cleaned_data
         full_name = data.get('first_name') + ' ' + data.get('last_name')
         dn = 'uid=' + data.get('username') + ',' + settings.LDAP_BASE_DN
@@ -42,6 +40,11 @@ class RegisterView(generic.FormView):
             "loginShell": ["/bin/bash"],
             "homeDirectory": ["/home/users/" + data.get('username')]
         }
+
+        query = "(uid=" + data.get('username') + ")"
+        result = self.con.search_s(settings.LDAP_BASE_DN, ldap.SCOPE_SUBTREE, query)
+        if result:
+            return HttpResponse("Username " + data.get('username') + " is not available")
 
         modlist_bytes = {}
         for key in modlist.keys():
