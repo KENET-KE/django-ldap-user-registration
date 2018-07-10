@@ -35,7 +35,7 @@ class RegisterView(generic.FormView):
             "displayName": [full_name],
             "mail": [data.get('email')],
             "homePhone": [data.get('phone')],
-            "uidNumber": ["1003"],
+            "uidNumber": ["1003"], # generate a unique ID
             "gidNumber": [settings.LDAP_GID],
             "loginShell": ["/bin/bash"],
             "homeDirectory": ["/home/users/" + data.get('username')]
@@ -44,8 +44,9 @@ class RegisterView(generic.FormView):
         query = "(uid=" + data.get('username') + ")"
         result = self.con.search_s(settings.LDAP_BASE_DN, ldap.SCOPE_SUBTREE, query)
         if result:
-            return HttpResponse("Username " + data.get('username') + " is not available")
+            return HttpResponse("Username " + data.get('username') + " is not available (in use)")
 
+        # convert modlist to bytes form ie b'abc'
         modlist_bytes = {}
         for key in modlist.keys():
             modlist_bytes[key] = [i.encode('utf-8') for i in modlist[key]]
