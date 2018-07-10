@@ -1,4 +1,5 @@
 import ldap
+from ldap.modlist import addModlist
 
 from django.views import generic
 from django.http.response import HttpResponse
@@ -40,5 +41,9 @@ class RegisterView(generic.FormView):
             "homeDirectory": ["/home/users/" + data.get('username')]
         }
 
-        result = self.con.add_s(dn, ldap.modlist.addModlist(modlist))
+        modlist_bytes = {}
+        for key in modlist.keys():
+            modlist_bytes[key] = [i.encode('utf-8') for i in modlist[key]]
+
+        result = self.con.add_s(dn, addModlist(modlist_bytes))
         return HttpResponse(result)

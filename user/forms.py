@@ -19,7 +19,7 @@ class UserRegisterForm(forms.Form):
     username = forms.CharField(required=True, min_length=3, max_length=30, help_text='Choose a memorable name e.g jdoe',
                                validators=[
                                    RegexValidator(
-                                       regex='^[a-zA-Z0-9_]*$',
+                                       regex='^[a-zA-Z0-9_]+$',
                                        message='Username must be Alphanumeric. Allowed chars [a-zA-Z0-9_]',
                                        code='invalid_username'
                                    ),
