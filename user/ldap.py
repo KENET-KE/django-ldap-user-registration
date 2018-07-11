@@ -10,7 +10,10 @@ from django.conf import settings
 class LDAPOperations():
     def connect(self):
         self.con = ldap.initialize(settings.LDAP_PROTO + '://' + settings.LDAP_HOST + ':' + settings.LDAP_PORT)
-        self.con.simple_bind_s(settings.LDAP_BIND_DN, settings.LDAP_BIND_DN_CREDENTIAL)
+        try:
+            self.con.simple_bind_s(settings.LDAP_BIND_DN, settings.LDAP_BIND_DN_CREDENTIAL)
+        except ldap.SERVER_DOWN:
+            raise ldap.SERVER_DOWN('The LDAP library can’t contact the LDAP server. Contact the admin.')
 
     def check_attribute(self,attribute,value):
         """

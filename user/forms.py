@@ -8,8 +8,9 @@ from crispy_forms.layout import Submit, Layout, Div, Fieldset
 from .models import Institution
 from .ldap import LDAPOperations
 
+
 class UserRegisterForm(forms.Form):
-    title_choices = (('Mr.', 'Mr'), ('Ms', 'Ms',), ('Dr.', 'Dr.',), ('Prof.', 'Prof.',),)
+    title_choices = (('Mr.', 'Mr'), ('Ms', 'Ms',), ('Mrs.', 'Mrs.',), ('Dr.', 'Dr.',), ('Prof.', 'Prof.',),)
     country_choices = (('Kenya', 'Kenya'),)
 
     first_name = forms.CharField(required=True, max_length=255)
@@ -42,8 +43,8 @@ class UserRegisterForm(forms.Form):
         # self.helper.form_action = 'register'
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn-success'))
         self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-8'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-8'
         self.helper.error_text_inline = False
         self.helper.layout = Layout(
             Fieldset('Personal Data',
