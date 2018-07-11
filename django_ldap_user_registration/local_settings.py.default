@@ -1,3 +1,7 @@
+# IDP Details
+IDP_NAME = 'IDP Y'
+IDP_LOGO = 'https://example.com/logo.jpg'
+
 # LDAP Settings
 
 LDAP_PROTO = 'ldap'
@@ -16,3 +20,4 @@ ANYMAIL = {
 
 DEFAULT_FROM_EMAIL = 'LDAP IDP <support@example.com>'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

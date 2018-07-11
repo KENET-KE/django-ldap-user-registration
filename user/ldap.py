@@ -5,7 +5,7 @@ import ldap
 from ldap.modlist import addModlist
 
 from django.conf import settings
-from django.contrib.auth.forms import User
+
 
 class LDAPOperations():
     def connect(self):
@@ -19,7 +19,7 @@ class LDAPOperations():
         
         :param attribute:
         :param value
-        :return: 
+        :return: tuple
         """
         query = "("+ attribute + "=" + value + ")"
         self.connect()

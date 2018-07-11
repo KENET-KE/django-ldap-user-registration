@@ -9,7 +9,7 @@ from .models import Institution
 from .ldap import LDAPOperations
 
 class UserRegisterForm(forms.Form):
-    title_choices = (('Mr.', 'Mr'), ('Ms', 'Ms',), ('Dr.', 'Dr.',),)
+    title_choices = (('Mr.', 'Mr'), ('Ms', 'Ms',), ('Dr.', 'Dr.',), ('Prof.', 'Prof.',),)
     country_choices = (('Kenya', 'Kenya'),)
 
     first_name = forms.CharField(required=True, max_length=255)
@@ -21,8 +21,8 @@ class UserRegisterForm(forms.Form):
                                           empty_label='Select an organization', to_field_name='name')
     username = forms.CharField(required=True, min_length=3, max_length=30, help_text='Choose a memorable name e.g jdoe',
                                validators=[UnicodeUsernameValidator()])
-    password = forms.CharField(widget=forms.PasswordInput)
-    password1 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
+    password = forms.CharField(widget=forms.PasswordInput, min_length=8)
+    password1 = forms.CharField(widget=forms.PasswordInput, min_length=8, label='Confirm Password')
     phone = forms.CharField(required=True, max_length=200)
     address = forms.CharField(max_length=1000, widget=forms.Textarea())
     country = forms.ChoiceField(required=True, choices=country_choices)  # Set to default to your country
@@ -37,18 +37,21 @@ class UserRegisterForm(forms.Form):
         super(UserRegisterForm, self).__init__(*args, **kwargs)
         self.ldap_ops = LDAPOperations()
         self.helper = FormHelper()
-        self.helper.form_id = 'id-personal-data-form'
+        self.helper.form_id = 'id-user-data-form'
         self.helper.form_method = 'post'
-        #self.helper.form_action = reverse('register')
+        # self.helper.form_action = 'register'
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn-success'))
         self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.error_text_inline = False
         self.helper.layout = Layout(
             Fieldset('Personal Data',
                      Field('first_name', placeholder='Your first name',
                            css_class="some-class"),
                      Div('last_name', title="Your last name"),
                      'email', 'phone', 'gender', 'title', 'designation', 'organization',),
-            Fieldset('Login Details', 'username', 'password', 'password1', style="color: brown;"),
+            Fieldset('Login Details', 'username', 'password', 'password1',),
             Fieldset('Address', 'address', 'country',))
                       #Tab('More Info', 'more_info')))
 
@@ -67,5 +70,17 @@ class UserRegisterForm(forms.Form):
         result = self.ldap_ops.check_attribute('mail', mail)
         if result:
             raise forms.ValidationError("Email " + mail + " is not available (in use)",
-                                        code='username_exists_ldap')
+                                        code='email_exists_ldap')
         return mail
+
+    def clean(self):
+
+        # Check for password matching
+
+        password = self.cleaned_data.get('password')
+        password1 = self.cleaned_data.get('password1')
+
+        if password != password1:
+            self._errors["password"] = self.error_class(["Passwords do not match"])
+
+        return self.cleaned_data

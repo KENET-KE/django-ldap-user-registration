@@ -13,7 +13,8 @@ class UserRegistrationRecord(models.Model):
         much as we are sending user data to LDAP for registration, we want to keep a history
         of who has registered. We also want to use this table during password reset.
         We use django's built-in user model (User) just to keep data and avoid re-creating fields
-        that Django already provides. Note that we are note setting the password fields.
+        that Django already provides. Note that we are not setting the password fields. We are not
+        even keeping the passwords. They belong to LDAP!
     """
     # controls
     reset_code = models.CharField(max_length=255, default='')
