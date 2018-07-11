@@ -14,7 +14,7 @@ class IndexView(generic.TemplateView):
 class RegisterView(generic.FormView):
     template_name = 'user/register.html'
     form_class = UserRegisterForm
-    success_url = '/abc/'
+    success_url = '/user/register/success/'
 
     def form_valid(self, form):
         ldap_ops = LDAPOperations()
@@ -35,4 +35,9 @@ class RegisterView(generic.FormView):
             "homeDirectory": ["/home/users/" + data.get('username')]
         }
         result = ldap_ops.add_user(modlist)
-        return HttpResponse(result)
+        return super().form_valid(form)
+
+
+class RegisterSuccessView(generic.TemplateView):
+    # Index View
+    template_name = 'user/register_success.html'
