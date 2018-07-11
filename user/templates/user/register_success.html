@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "user/index.html" %}
+{% block title %}Account creation success!{% endblock %}
+{% block wrapper %}
 <h1>Successfully registered!</h1>
-</body>
-</html>
+<h2 class="text-success">An verification email has been sent to your account</h2>
+{% endblock %}

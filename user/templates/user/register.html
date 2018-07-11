@@ -1,24 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-    {% load bootstrap3 %}
-    {% bootstrap_css %}
-    <style type="text/css">
-        .invalid-feedback {
-         color: red;
-         }
-
-
-    </style>
-</head>
-<body>
-
-<div class="container">
+{% extends "user/index.html" %}
+{% block title %}Create an account{% endblock %}
+{% block wrapper %}
     <div class="row">
-        <h1>Federated ID Registration</h1>
-        <p>You are registering to the IDP X...</p>
+        <h2>You are registering to the {{ idp_name }}</h2>
     </div>
     {% if form.errors %}
     <div class="alert alert-danger">
@@ -37,5 +21,4 @@
         {% crispy form %}
     </div>
 </div>
-</body>
-</html>
+{% endblock %}

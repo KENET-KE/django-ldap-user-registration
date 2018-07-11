@@ -1,3 +1,27 @@
-<h1>Index</h1>
-<a href="{% url 'user:register' %}">Register</a>
-<a href="#">Forgot Password</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ idp_name }}: {% block title %}Welcome! User Registration{% endblock %}</title>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    <style type="text/css">
+        .invalid-feedback {
+         color: red;
+         }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h1>{{ idp_name }} User Support</h1>
+    </div>
+    {% block wrapper %}
+    <h1>Index</h1>
+    <a href="{% url 'user:register' %}">Register</a>
+    <a href="#">Forgot Password</a>
+    {% endblock %}
+</div>
+</body>
+</html>
