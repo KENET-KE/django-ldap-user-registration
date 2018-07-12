@@ -1,6 +1,6 @@
 # Django LDAP User Registration
 
-A Django web front-end for that provides user registration to an LDAP server.
+A Django web front-end that provides user registration and password reset to an LDAP server.
 
 ![KENET Research Services](https://www.kenet.or.ke/sites/default/files/kenelogomedium.png)
 
