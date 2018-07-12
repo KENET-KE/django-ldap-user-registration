@@ -3,6 +3,7 @@ from django.conf import settings
 
 from .forms import UserRegisterForm
 from .ldap import LDAPOperations
+from .passwd import PasswordUtils
 
 
 class IndexView(generic.TemplateView):
@@ -17,13 +18,16 @@ class RegisterView(generic.FormView):
 
     def form_valid(self, form):
         ldap_ops = LDAPOperations()
+        passwd_util = PasswordUtils()
+
         data = form.cleaned_data
         full_name = data.get('first_name') + ' ' + data.get('last_name')
+        password = passwd_util.mkpasswd(data.get('password'), hash='crypt')
 
         modlist = {
             "objectClass": ["inetOrgPerson", "posixAccount", "shadowAccount"],
             "uid": [data.get('username')],
-            "userPassword": [data.get('password')],
+            "userPassword": [password],
             "sn": [data.get('last_name')],
             "givenName": [data.get('first_name')],
             "cn": [full_name],
