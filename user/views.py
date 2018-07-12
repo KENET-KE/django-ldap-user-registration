@@ -81,7 +81,7 @@ class RegisterView(generic.FormView):
         """
         Find the last record of user. Get UID base and increment by adding the last record pk
         (primary key) and one
-        :return: uid
+        :return: int
         """
         uid_number = settings.LDAP_BASE_UID
         try:
