@@ -1,5 +1,4 @@
 from django.views import generic
-from django.http.response import HttpResponse
 from django.conf import settings
 
 from .forms import UserRegisterForm
@@ -20,20 +19,33 @@ class RegisterView(generic.FormView):
         ldap_ops = LDAPOperations()
         data = form.cleaned_data
         full_name = data.get('first_name') + ' ' + data.get('last_name')
+
         modlist = {
             "objectClass": ["inetOrgPerson", "posixAccount", "shadowAccount"],
             "uid": [data.get('username')],
+            "userPassword": [data.get('password')],
             "sn": [data.get('last_name')],
             "givenName": [data.get('first_name')],
             "cn": [full_name],
             "displayName": [full_name],
+            "title": [data.get('title')],
             "mail": [data.get('email')],
+            "employeeType": [data.get('designation')],
+            "departmentNumber": [data.get('department')],
+            "telephoneNumber": [data.get('phone')],
+            "registeredAddress": [data.get('address')],
             "homePhone": [data.get('phone')],
             "uidNumber": ["1003"], # generate a unique ID
             "gidNumber": [settings.LDAP_GID],
             "loginShell": ["/bin/bash"],
             "homeDirectory": ["/home/users/" + data.get('username')]
         }
+        # if this is a CATCH ALL IDP, we need to capture more user attributes since it serves many
+        # user organizations and possibly different countries
+        if settings.IDP_CATCH_ALL:
+            modlist['description'] = ['Organization: ' + data.get('organization').name,
+                                      'Country: ' + data.get('country')]
+
         result = ldap_ops.add_user(modlist)
         return super().form_valid(form)
 

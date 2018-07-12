@@ -2,6 +2,9 @@
 IDP_NAME = 'IDP Y'
 IDP_LOGO = 'https://example.com/logo.jpg'
 
+# This setting enables capturing of a users institution and country details
+IDP_CATCH_ALL = False
+
 # LDAP Settings
 
 LDAP_PROTO = 'ldap'

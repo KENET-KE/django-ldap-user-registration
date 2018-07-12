@@ -15,10 +15,17 @@ class UserRegisterForm(forms.Form):
 
     first_name = forms.CharField(required=True, max_length=255)
     last_name = forms.CharField(required=True, max_length=255)
+    gender = forms.TypedChoiceField(
+        choices=((0, "Male"), (1, "Female"),),
+        coerce=lambda x: bool(int(x)),
+        widget=forms.RadioSelect,
+        initial='0',
+        required=True)
     email = forms.EmailField(required=True)
-    title = forms.ChoiceField(required=False, choices=title_choices)
+    title = forms.ChoiceField(required=True, choices=title_choices)
     designation = forms.CharField(max_length=200)
-    organization = forms.ModelChoiceField(required=True, queryset=Institution.objects.all(),
+    department = forms.CharField(required=True, max_length=255)
+    organization = forms.ModelChoiceField(required=False, queryset=Institution.objects.all(),
                                           empty_label='Select an organization', to_field_name='name')
     username = forms.CharField(required=True, min_length=3, max_length=30, help_text='Choose a memorable name e.g jdoe',
                                validators=[UnicodeUsernameValidator()])
@@ -26,13 +33,7 @@ class UserRegisterForm(forms.Form):
     password1 = forms.CharField(widget=forms.PasswordInput, min_length=8, label='Confirm Password')
     phone = forms.CharField(required=True, max_length=200)
     address = forms.CharField(max_length=1000, widget=forms.Textarea())
-    country = forms.ChoiceField(required=True, choices=country_choices)  # Set to default to your country
-    gender = forms.TypedChoiceField(
-        choices=((0, "Male"), (1, "Female"),),
-        coerce=lambda x: bool(int(x)),
-        widget=forms.RadioSelect,
-        initial='0',
-        required=True)
+    country = forms.ChoiceField(required=False, choices=country_choices)  # Set to default to your country
 
     def __init__(self, *args, **kwargs):
         super(UserRegisterForm, self).__init__(*args, **kwargs)
@@ -51,10 +52,9 @@ class UserRegisterForm(forms.Form):
                      Field('first_name', placeholder='Your first name',
                            css_class="some-class"),
                      Div('last_name', title="Your last name"),
-                     'email', 'phone', 'gender', 'title', 'designation', 'organization',),
+                     'email', 'phone', 'gender', 'title', 'designation', 'department', 'organization',),
             Fieldset('Login Details', 'username', 'password', 'password1',),
             Fieldset('Address', 'address', 'country',))
-                      #Tab('More Info', 'more_info')))
 
     def clean_username(self):
         # check username existence in LDAP
