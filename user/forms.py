@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.auth.models import User
 
 from crispy_forms.bootstrap import Field, InlineRadios, TabHolder, Tab
 from crispy_forms.helper import FormHelper
@@ -57,19 +58,26 @@ class UserRegisterForm(forms.Form):
             Fieldset('Address', 'address', 'country',))
 
     def clean_username(self):
-        # check username existence in LDAP
         username = self.cleaned_data['username']
+        # check username existence in local storage DB
+        query_set = User.objects.filter(username=username)
+
+        # check username existence in LDAP
+
         result = self.ldap_ops.check_attribute('uid', username)
-        if result:
+        if result or query_set:
             raise forms.ValidationError("Username " + username + " is not available (in use)",
                                         code='username_exists_ldap')
         return username
 
     def clean_email(self):
-        # check email existence in LDAP
         mail = self.cleaned_data['email']
+        # check for email existence in local storage DB
+        query_set = User.objects.filter(email=mail)
+
+        # check email existence in LDAP
         result = self.ldap_ops.check_attribute('mail', mail)
-        if result:
+        if result or query_set:
             raise forms.ValidationError("Email " + mail + " is not available (in use)",
                                         code='email_exists_ldap')
         return mail

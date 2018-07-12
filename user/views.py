@@ -1,7 +1,10 @@
 from django.views import generic
+from django.db.utils import IntegrityError
+from django.contrib.auth.models import User
 from django.conf import settings
 
 from .forms import UserRegisterForm
+from .models import UserRegistrationRecord
 from .ldap import LDAPOperations
 from .passwd import PasswordUtils
 
@@ -23,6 +26,7 @@ class RegisterView(generic.FormView):
         data = form.cleaned_data
         full_name = data.get('first_name') + ' ' + data.get('last_name')
         password = passwd_util.mkpasswd(data.get('password'), hash='crypt')
+        uid_number = str(self.generate_uid_number())
 
         modlist = {
             "objectClass": ["inetOrgPerson", "posixAccount", "shadowAccount"],
@@ -39,7 +43,7 @@ class RegisterView(generic.FormView):
             "telephoneNumber": [data.get('phone')],
             "registeredAddress": [data.get('address')],
             "homePhone": [data.get('phone')],
-            "uidNumber": ["1003"], # generate a unique ID
+            "uidNumber": [uid_number],
             "gidNumber": [settings.LDAP_GID],
             "loginShell": ["/bin/bash"],
             "homeDirectory": ["/home/users/" + data.get('username')]
@@ -51,7 +55,42 @@ class RegisterView(generic.FormView):
                                       'Country: ' + data.get('country')]
 
         result = ldap_ops.add_user(modlist)
+
+        # we want to keep record of successful registrations
+        if result:
+            user = User.objects.create_user(
+                username = data.get('username'),
+                email = data.get('email'),
+                first_name = data.get('first_name'),
+                last_name = data.get('last_name')
+            )
+            user_record = UserRegistrationRecord.objects.create(
+                user = user,
+                gender = data.get('gender'),
+                title = data.get('title'),
+                designation = data.get('designation'),
+                organization = data.get('organization'),
+                phone = data.get('phone'),
+                address = data.get('address'),
+                country = data.get('country')
+            )
+
         return super().form_valid(form)
+
+    def generate_uid_number(self):
+        """
+        Find the last record of user. Get UID base and increment by adding the last record pk
+        (primary key) and one
+        :return: uid
+        """
+        uid_number = settings.LDAP_BASE_UID
+        try:
+            latest = User.objects.latest('pk')
+            uid_number += latest.pk + 1
+        except User.DoesNotExist:
+            pass
+
+        return uid_number
 
 
 class RegisterSuccessView(generic.TemplateView):
