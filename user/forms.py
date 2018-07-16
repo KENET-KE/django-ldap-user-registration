@@ -93,3 +93,26 @@ class UserRegisterForm(forms.Form):
             self._errors["password"] = self.error_class(["Passwords do not match"])
 
         return self.cleaned_data
+
+
+class PasswordResetForm(forms.Form):
+    email = forms.EmailField(
+        required=True,
+        label='RESET PASSWORD',
+        help_text="An email will be sent to the address you specify, containing a link that will allow you to change\
+         your old password. "
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(PasswordResetForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-password-reset-form'
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Submit', css_class='btn-warning'))
+        #self.helper.form_class = 'form-horizontal'
+        #self.helper.label_class = 'col-md-2'
+        #self.helper.field_class = 'col-md-8'
+        self.helper.error_text_inline = False
+        self.helper.layout = Layout(
+            Field('email', placeholder='Your E-mail')
+        )

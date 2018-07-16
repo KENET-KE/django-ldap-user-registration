@@ -1,9 +1,9 @@
 from django.views import generic
-from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
 from django.conf import settings
 
 from .forms import UserRegisterForm
+from .forms import PasswordResetForm
 from .models import UserRegistrationRecord
 from .ldap import LDAPOperations
 from .passwd import PasswordUtils
@@ -94,5 +94,14 @@ class RegisterView(generic.FormView):
 
 
 class RegisterSuccessView(generic.TemplateView):
-    # Index View
     template_name = 'user/register_success.html'
+
+
+class PasswordResetView(generic.FormView):
+    template_name = 'user/password_reset.html'
+    form_class = PasswordResetForm
+    success_url = '/user/password/reset/success/'
+
+
+class PasswordResetSuccessView(generic.TemplateView):
+    template_name = 'user/password_reset_success.html'
