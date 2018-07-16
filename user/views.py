@@ -102,6 +102,15 @@ class PasswordResetView(generic.FormView):
     form_class = PasswordResetForm
     success_url = '/user/password/reset/success/'
 
+    def form_valid(self, form):
+        """
+        1. get user by the provided email from db (die silently if there's none)
+        2. if exists and is active, send reset email
+        :param form: 
+        :return: 
+        """
+        return super().form_valid(form)
+
 
 class PasswordResetSuccessView(generic.TemplateView):
     template_name = 'user/password_reset_success.html'
