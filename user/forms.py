@@ -105,6 +105,7 @@ class PasswordResetForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(PasswordResetForm, self).__init__(*args, **kwargs)
+        self.ldap_ops = LDAPOperations()
         self.helper = FormHelper()
         self.helper.form_id = 'id-password-reset-form'
         self.helper.form_method = 'post'
@@ -116,3 +117,16 @@ class PasswordResetForm(forms.Form):
         self.helper.layout = Layout(
             Field('email', placeholder='Your E-mail')
         )
+
+    def clean_email(self):
+        mail = self.cleaned_data['email']
+        # check for email existence in local storage DB
+        query_set = User.objects.filter(email=mail)
+
+        # check email existence in LDAP
+        result = self.ldap_ops.check_attribute('mail', mail)
+        if not result and not query_set:
+            raise forms.ValidationError("This email address doesn't have an associated user account. \
+            Please make sure you have registered, before proceeding.",
+                                        code='email_exists_ldap')
+        return mail

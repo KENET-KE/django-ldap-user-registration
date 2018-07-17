@@ -15,7 +15,12 @@
 <body>
 <div class="container">
     <div class="row">
-        <h1>{{ idp_name }} User Support</h1>
+        <div class="col-md-2">
+            <img width="200" src="{{IDP_LOGO}}" alt="{{IDP_NAME}}" />
+        </div>
+        <div class="col-md-10">
+            <h1>{{ IDP_NAME }} User Support</h1>
+        </div>
     </div>
     {% block wrapper %}
     <h1>Index</h1>

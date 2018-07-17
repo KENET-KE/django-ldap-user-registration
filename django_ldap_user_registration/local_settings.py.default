@@ -1,3 +1,8 @@
+# Site
+SITE_BASE_URL = 'http://example.com' # No trailing slash
+
+TIME_ZONE = 'Africa/Nairobi'
+
 # IDP Details
 IDP_NAME = 'IDP Y'
 IDP_LOGO = 'https://example.com/logo.jpg'
@@ -15,12 +20,16 @@ LDAP_BIND_DN = 'cn=admin,dc=example,dc=ac,dc=ke'
 LDAP_BIND_DN_CREDENTIAL = 'my password'
 LDAP_GID = "502" # group ID to add signed up users
 
+# Password Reset
+
+PASSWORD_RESET_TOKEN_EXPIRY = 2 #Hours
+
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
 ANYMAIL = {
         "MAILGUN_API_KEY": "<your key>",
 }
 
-DEFAULT_FROM_EMAIL = 'LDAP IDP <support@example.com>'
+DEFAULT_FROM_EMAIL = IDP_NAME + ' <support@example.com>'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

@@ -1,3 +1,6 @@
+from datetime import timedelta
+from datetime import datetime
+
 from django.views import generic
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -7,7 +10,7 @@ from .forms import PasswordResetForm
 from .models import UserRegistrationRecord
 from .ldap import LDAPOperations
 from .passwd import PasswordUtils
-
+from .utils import send_reset_password_email
 
 class IndexView(generic.TemplateView):
     # Index View
@@ -109,6 +112,22 @@ class PasswordResetView(generic.FormView):
         :param form: 
         :return: 
         """
+        passwd_util = PasswordUtils()
+        email = form.cleaned_data.get('email')
+        user = User.objects.get(email=email)
+        user_reg_record = UserRegistrationRecord.objects.get(user=user)
+        token = passwd_util.getsalt(length=60) #re-use salt method to generate unique token
+        expiry = datetime.now() + timedelta(hours=settings.PASSWORD_RESET_TOKEN_EXPIRY)
+        user_reg_record.reset_code = token
+        user_reg_record.reset_code_active = True
+        user_reg_record.reset_code_expiry = expiry
+        user_reg_record.save()
+
+        reset_link = settings.SITE_BASE_URL + '/user/password/edit/' + token + '/'
+        # send email
+        send_reset_password_email(user.email, settings.DEFAULT_FROM_EMAIL,
+                                  user.get_full_name(), reset_link, settings.IDP_NAME)
+
         return super().form_valid(form)
 
 
