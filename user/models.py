@@ -27,6 +27,7 @@ class UserRegistrationRecord(models.Model):
     gender = models.CharField(max_length=10, blank=True)
     title = models.CharField(max_length=30, blank=True)
     designation = models.CharField(max_length=200, blank=True)
+    department = models.CharField(max_length=200, blank=True)
     organization = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=200, blank=True)
     address = models.TextField(blank=True)
