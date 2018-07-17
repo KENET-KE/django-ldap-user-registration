@@ -107,9 +107,12 @@ class RegisterActivateView(generic.View):
 
         result = ldap_ops.add_user(modlist)
         if result:
-            # we need to de-activate the code so it can't be re-used
+            # we need to de-activate the code so it can't be re-used and also activate user account just
+            # for record purposes since we are not using django's login mechanism anyway
             user_rr.reset_code = ''
             user_rr.save()
+            user.is_active = True
+            user.save()
 
         return render(request, 'user/register_activate_success.html', {
             'result': result,
