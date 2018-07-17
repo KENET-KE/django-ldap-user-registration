@@ -2,5 +2,5 @@
 {% block title %}Account activation success!{% endblock %}
 {% block wrapper %}
 <h1 class="text-success">{{ message }}</h1>
-<h2>Proceed to <a href="#">IDP Login</a></h2>
+<h2>Proceed to <a href="{{ SERVICE_PROVIDER_URL }}">{{ SERVICE_PROVIDER }}</a> to try out your login credentials</h2>
 {% endblock %}
