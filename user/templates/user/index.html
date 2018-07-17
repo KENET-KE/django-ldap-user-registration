@@ -24,8 +24,8 @@
     </div>
     {% block wrapper %}
     <h1>Index</h1>
-    <a href="{% url 'user:register' %}">Register</a>
-    <a href="{% url 'user:password_reset' %}">Forgot Password</a>
+    <a href="{% url 'user:register' %}" class="btn btn-success btn-lg" role="button">Register</a>
+    <a href="{% url 'user:password_reset' %}" class="btn btn-warning btn-lg" role="button">Forgot Password</a>
     {% endblock %}
 </div>
 </body>

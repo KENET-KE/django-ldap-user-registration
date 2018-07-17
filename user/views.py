@@ -11,6 +11,7 @@ from .models import UserRegistrationRecord
 from .ldap import LDAPOperations
 from .passwd import PasswordUtils
 from .utils import send_reset_password_email
+from .utils import send_newly_registered_email
 
 class IndexView(generic.TemplateView):
     # Index View
@@ -59,16 +60,22 @@ class RegisterView(generic.FormView):
 
         result = ldap_ops.add_user(modlist)
 
+        token = passwd_util.getsalt(length=60)
         # we want to keep record of successful registrations
         if result:
             user = User.objects.create_user(
                 username = data.get('username'),
                 email = data.get('email'),
                 first_name = data.get('first_name'),
-                last_name = data.get('last_name')
+                last_name = data.get('last_name'),
+                is_active = False,
             )
+            # We keep the user data for later when the user activates the account so we can create it on
+            # the LDAP back-end
             user_record = UserRegistrationRecord.objects.create(
                 user = user,
+                ldap_password = password,
+                reset_code = token,
                 gender = data.get('gender'),
                 title = data.get('title'),
                 designation = data.get('designation'),
@@ -77,6 +84,12 @@ class RegisterView(generic.FormView):
                 address = data.get('address'),
                 country = data.get('country')
             )
+
+        # send notification and activation email alert
+        activate_link = settings.SITE_BASE_URL + '/user/registe/activate/' + token + '/'
+
+        send_newly_registered_email(user.email, settings.DEFAULT_FROM_EMAIL,
+                                  user.get_full_name(), activate_link, settings.IDP_NAME)
 
         return super().form_valid(form)
 
@@ -116,7 +129,7 @@ class PasswordResetView(generic.FormView):
         email = form.cleaned_data.get('email')
         user = User.objects.get(email=email)
         user_reg_record = UserRegistrationRecord.objects.get(user=user)
-        token = passwd_util.getsalt(length=60) #re-use salt method to generate unique token
+        token = passwd_util.getsalt(length=60) # re-use salt method to generate unique token
         expiry = datetime.now() + timedelta(hours=settings.PASSWORD_RESET_TOKEN_EXPIRY)
         user_reg_record.reset_code = token
         user_reg_record.reset_code_active = True

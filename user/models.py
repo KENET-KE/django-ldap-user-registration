@@ -17,12 +17,13 @@ class UserRegistrationRecord(models.Model):
         even keeping the passwords. They belong to LDAP!
     """
     # controls
-    reset_code = models.CharField(max_length=255, default='')
+    reset_code = models.CharField(max_length=255, default='') # used to hold activation code for registration too
     reset_code_active = models.BooleanField(default=False)
     reset_code_expiry = models.DateTimeField(null=True)
 
     # user data
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ldap_password = models.CharField(max_length=128, blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True)
     title = models.CharField(max_length=30, blank=True)
     designation = models.CharField(max_length=200, blank=True)
