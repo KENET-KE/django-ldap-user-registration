@@ -10,4 +10,6 @@ urlpatterns = [
     path('register/activate/<slug:activation_code>/', views.RegisterActivateView.as_view(), name='register_activate'),
     path('password/reset/', views.PasswordResetView.as_view(), name='password_reset'),
     path('password/reset/success/', views.PasswordResetSuccessView.as_view(), name='password_reset_success'),
+    path('password/edit/<slug:token>/', views.PasswordEditView.as_view(), name='password_edit'),
+    path('password/edit/success/', views.PasswordEditSuccessView.as_view(), name='password_edit_success'),
     ]

@@ -2,6 +2,7 @@
 
 from django.conf import settings
 
+
 def site(request):
     return {
         'SITE_BASE_URL': settings.SITE_BASE_URL,

@@ -6,6 +6,8 @@ TIME_ZONE = 'Africa/Nairobi'
 # IDP Details
 IDP_NAME = 'IDP Y'
 IDP_LOGO = 'https://example.com/logo.jpg' # Width of 200px at least
+
+# Test service provider
 SERVICE_PROVIDER = 'Test service provider'
 SERVICE_PROVIDER_URL = 'https://test-service.kenet.or.ke'
 

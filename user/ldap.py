@@ -62,3 +62,20 @@ class LDAPOperations():
         self.connect()
         result = self.con.add_s(dn, addModlist(modlist_bytes))
         return result
+
+    def set_password(self,username,password):
+        """
+        set user password
+        :param username: 
+        :param password: 
+        :return: ldap result
+        """
+        dn = "uid=%s,%s" % (username,settings.LDAP_BASE_DN,)
+        user_result = self.check_attribute('uid', username)  # get user
+        tmp_modlist = dict(user_result)
+        old_value = {"userPassword": [tmp_modlist[dn]['userPassword'][0]]}
+        new_value = {"userPassword": [password.encode()]}
+
+        modlist = ldap.modlist.modifyModlist(old_value, new_value)
+        result = self.con.modify_s(dn, modlist)
+        return result

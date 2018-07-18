@@ -1,19 +1,21 @@
 from datetime import timedelta
-from datetime import datetime
 
 from django.views import generic
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.utils import timezone
 
 from .forms import UserRegisterForm
 from .forms import PasswordResetForm
+from .forms import PasswordResetEditForm
 from .models import UserRegistrationRecord
 from .ldap import LDAPOperations
 from .passwd import PasswordUtils
 from .utils import send_reset_password_email
 from .utils import send_newly_registered_email
+from .exceptions import AccountActivationException
+from .exceptions import PasswordResetException
 
 class IndexView(generic.TemplateView):
     # Index View
@@ -77,8 +79,11 @@ class RegisterActivateView(generic.View):
         try:
             user_rr = UserRegistrationRecord.objects.get(reset_code=activation_code)
         except UserRegistrationRecord.DoesNotExist:
-            raise Http404('Invalid activation code')
+            raise AccountActivationException('Invalid activation code')
         user = user_rr.user
+        if user.is_active:
+            raise AccountActivationException('This account is already active')
+
         modlist = {
             "objectClass": ["inetOrgPerson", "posixAccount", "shadowAccount"],
             "uid": [user.username],
@@ -152,7 +157,7 @@ class PasswordResetView(generic.FormView):
         user = User.objects.get(email=email)
         user_reg_record = UserRegistrationRecord.objects.get(user=user)
         token = passwd_util.getsalt(length=60) # re-use salt method to generate unique token
-        expiry = datetime.now() + timedelta(hours=settings.PASSWORD_RESET_TOKEN_EXPIRY)
+        expiry = timezone.now() + timedelta(hours=settings.PASSWORD_RESET_TOKEN_EXPIRY)
         user_reg_record.reset_code = token
         user_reg_record.reset_code_active = True
         user_reg_record.reset_code_expiry = expiry
@@ -168,3 +173,53 @@ class PasswordResetView(generic.FormView):
 
 class PasswordResetSuccessView(generic.TemplateView):
     template_name = 'user/password_reset_success.html'
+
+
+class PasswordEditView(generic.View):
+    template_name = 'user/password_edit.html'
+
+    def get(self, request, token):
+        self.check_token_validity(token)
+        return render(request, self.template_name, {
+            'form': PasswordResetEditForm(),
+        })
+
+    def post(self, request, token):
+        ldap_ops = LDAPOperations()
+        passwd_util = PasswordUtils()
+        user_rr = self.check_token_validity(token)
+        form = PasswordResetEditForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            username = user_rr.user.username
+            password = passwd_util.mkpasswd(data.get('password'), hash='crypt')
+
+            result = ldap_ops.set_password(username, password)
+            if result:
+                user_rr.reset_code_expiry = timezone.now()
+                user_rr.reset_code = ''
+                user_rr.reset_code_active = False
+                user_rr.save()
+                return redirect('/user/password/edit/success/')
+            else:
+                return render(request, self.template_name, {
+                    'form': form,
+                    'ldap_error': 'Password reset failed on LDAP server. Contact admin'
+                })
+        else:
+            return render(request, self.template_name, {
+                'form': form,
+            })
+
+    def check_token_validity(self,token):
+        try:
+            user_rr = UserRegistrationRecord.objects.get(reset_code=token,
+                                                         reset_code_active=True,
+                                                         reset_code_expiry__gt=timezone.now())
+        except UserRegistrationRecord.DoesNotExist:
+            raise PasswordResetException('Password reset link invalid or expired')
+        return user_rr
+
+
+class PasswordEditSuccessView(generic.TemplateView):
+    template_name = 'user/password_edit_success.html'
