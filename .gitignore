@@ -328,5 +328,5 @@ django_test_ldap/media/
 
 
 db.sqlite3
-
+.pytest_cache/
 django_ldap_user_registration/local_settings.py
