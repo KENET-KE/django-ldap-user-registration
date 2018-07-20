@@ -17,6 +17,7 @@ from .utils import send_newly_registered_email
 from .exceptions import AccountActivationException
 from .exceptions import PasswordResetException
 
+
 class IndexView(generic.TemplateView):
     # Index View
     template_name = 'user/index.html'
@@ -188,6 +189,7 @@ class PasswordEditView(generic.View):
         ldap_ops = LDAPOperations()
         passwd_util = PasswordUtils()
         user_rr = self.check_token_validity(token)
+
         form = PasswordResetEditForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
@@ -199,6 +201,7 @@ class PasswordEditView(generic.View):
                 user_rr.reset_code_expiry = timezone.now()
                 user_rr.reset_code = ''
                 user_rr.reset_code_active = False
+                user_rr.ldap_password = password
                 user_rr.save()
                 return redirect('/user/password/edit/success/')
             else:

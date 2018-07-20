@@ -121,7 +121,7 @@ class PasswordResetForm(forms.Form):
     def clean_email(self):
         mail = self.cleaned_data['email']
         # check for email existence in local storage DB
-        query_set = User.objects.filter(email=mail)
+        query_set = User.objects.filter(email=mail, is_active=True)
 
         # check email existence in LDAP
         result = self.ldap_ops.check_attribute('mail', mail)
