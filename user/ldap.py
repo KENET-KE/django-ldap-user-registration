@@ -8,6 +8,9 @@ from django.conf import settings
 
 
 class LDAPOperations():
+    def __init__(self):
+        self.connect()
+
     def connect(self):
         self.con = ldap.initialize(settings.LDAP_PROTO + '://' + settings.LDAP_HOST + ':' + settings.LDAP_PORT)
         try:
@@ -25,7 +28,6 @@ class LDAPOperations():
         :return: tuple
         """
         query = "("+ attribute + "=" + value + ")"
-        self.connect()
         result = self.con.search_s(settings.LDAP_BASE_DN, ldap.SCOPE_SUBTREE, query)
         return result
 
@@ -59,7 +61,6 @@ class LDAPOperations():
         for key in modlist.keys():
             modlist_bytes[key] = [i.encode('utf-8') for i in modlist[key]]
 
-        self.connect()
         result = self.con.add_s(dn, addModlist(modlist_bytes))
         return result
 
@@ -79,3 +80,8 @@ class LDAPOperations():
         modlist = ldap.modlist.modifyModlist(old_value, new_value)
         result = self.con.modify_s(dn, modlist)
         return result
+
+    def delete_user(self,username):
+        dn = "uid=%s,%s" % (username, settings.LDAP_BASE_DN,)
+        response = self.con.delete_s(dn)
+        return response
