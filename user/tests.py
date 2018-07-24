@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 from .models import Institution
@@ -43,12 +44,18 @@ class RegistrationTestCase(TestCase):
         user_rr = UserRegistrationRecord.objects.get(user=user)
         return user_rr.reset_code
 
+    def get_password_reset_code(self, username):
+        user = User.objects.get(username=username)
+        user_rr = UserRegistrationRecord.objects.get(user=user, reset_code_active=True,
+                                                     reset_code_expiry__gt=timezone.now())
+        return user_rr.reset_code
+
     def test_registration_page_load(self):
         response = self.client.get(reverse('user:register'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Create an account')
 
-    def test_register_an_account(self):
+    def test_register_and_reset(self):
         response = self.client.post(reverse('user:register'), self.data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Successfully registered!')
@@ -58,6 +65,30 @@ class RegistrationTestCase(TestCase):
         response = self.client.get(reverse('user:register_activate', kwargs={'activation_code': activation_code}))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Your account is now active!")
+
+        # test password reset
+        response = self.client.get(reverse('user:password_reset'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Password Reset')
+
+        response = self.client.post(reverse('user:password_reset'), { 'email': self.data['email'] }, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Password reset sent')
+
+        # test password edit
+        reset_code = self.get_password_reset_code(self.data['username'])
+        response = self.client.get(reverse('user:password_edit', kwargs={'token': reset_code}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Enter New Password')
+
+        new_password = self.passwd.getsalt(length=16)
+        response = self.client.post(
+            reverse('user:password_edit', kwargs={'token': reset_code}),
+            {'password': new_password, 'password1': new_password},
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Password edited successfully')
 
         # remove account so we don't have an orphan account on LDAP
         reponse = self.ldap.delete_user(self.data['username'])
