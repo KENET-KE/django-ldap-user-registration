@@ -12,6 +12,8 @@ class LDAPOperations():
         self.connect()
 
     def connect(self):
+        if settings.LDAP_PROTO == 'ldaps':
+            ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
         self.con = ldap.initialize(settings.LDAP_PROTO + '://' + settings.LDAP_HOST + ':' + settings.LDAP_PORT)
         try:
             self.con.simple_bind_s(settings.LDAP_BIND_DN, settings.LDAP_BIND_DN_CREDENTIAL)
