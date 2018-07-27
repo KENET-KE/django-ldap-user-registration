@@ -8,6 +8,7 @@ services:
 
 install:
   - pip install -r requirements.pip
+  - cp django_ldap_user_registration/local_settings.py.default django_ldap_user_registration/local_settings.py
 
 deploy:
   provider: heroku
@@ -19,7 +20,6 @@ deploy:
   run:
    - "export DJ_DEBUG=False"
    - "export DATABASE_URL=postgres://postgres@localhost/travisdb"
-   - "cp KENET-KE/django-ldap-user-registration/django_ldap_user_registration/local_settings.py.default KENET-KE/django-ldap-user-registration/django_ldap_user_registration/local_settings.py"
    - "python KENET-KE/django-ldap-user-registration/manage.py migrate"
 
 script: "pytest KENET-KE/django-ldap-user-registration"
