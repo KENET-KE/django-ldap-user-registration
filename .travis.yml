@@ -1,3 +1,14 @@
+language: python
+
+python:
+  - 3.6.5
+
+services:
+  - postgresql: "9.5"
+
+before_deploy:
+  - pip install -r django-ldap-user-registration/requirements.pip
+
 deploy:
   provider: heroku
   api_key:
@@ -5,3 +16,10 @@ deploy:
   app: django-ldap-user-registration
   on:
     repo: KENET-KE/django-ldap-user-registration
+  run:
+   - "export DJ_DEBUG=False"
+   - "export DATABASE_URL=postgres://postgres@localhost/travisdb"
+   - "cp django-ldap-user-registration/django_ldap_user_registration/local_settings.py.default django-ldap-user-registration/django_ldap_user_registration/local_settings.py"
+   - "python django-ldap-user-registration/manage.py migrate"
+
+script: "pytest"
