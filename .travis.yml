@@ -22,4 +22,4 @@ deploy:
    - "export DATABASE_URL=postgres://postgres@localhost/travisdb"
    - "python KENET-KE/django-ldap-user-registration/manage.py migrate"
 
-script: "pytest KENET-KE/django-ldap-user-registration"
+script: "pytest"
