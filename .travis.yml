@@ -6,7 +6,7 @@ python:
 services:
   - postgresql: "9.5"
 
-before_deploy:
+install:
   - pip install -r django-ldap-user-registration/requirements.pip
 
 deploy:
