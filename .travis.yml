@@ -9,6 +9,10 @@ services:
 install:
   - pip install -r requirements.pip
   - cp django_ldap_user_registration/local_settings.py.default django_ldap_user_registration/local_settings.py
+  - export DJ_DEBUG=False
+  - export DATABASE_URL=postgres://postgres@localhost/travisdb
+  - psql -c "CREATE DATABASE travisdb;" -U postgres
+  - python manage.py migrate
 
 deploy:
   provider: heroku
