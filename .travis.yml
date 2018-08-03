@@ -36,7 +36,8 @@ deploy:
    - "export DATABASE_URL=postgres://postgres@localhost/travisdb"
    - "python KENET-KE/django-ldap-user-registration/manage.py migrate"
 
-script: "echo 1"
+script:
+ - coverage run --source=user -m pytest
 
 after_success:
   - coveralls
