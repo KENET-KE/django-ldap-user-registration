@@ -1,4 +1,6 @@
 # Django LDAP User Registration
+[![Coverage Status](https://coveralls.io/repos/github/KENET-KE/django-ldap-user-registration/badge.svg?branch=master)](https://coveralls.io/github/KENET-KE/django-ldap-user-registration?branch=master)
+[![Documentation Status](https://readthedocs.org/projects/django-ldap-user-registration/badge/?version=latest)](https://django-ldap-user-registration.readthedocs.io/en/latest/?badge=latest)
 
 A Django web front-end that provides user registration and password reset to an LDAP server.
 

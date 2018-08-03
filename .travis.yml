@@ -34,4 +34,17 @@ deploy:
    - "export DATABASE_URL=postgres://postgres@localhost/travisdb"
    - "python KENET-KE/django-ldap-user-registration/manage.py migrate"
 
-script: "pytest"
+script: "echo 1"
+
+after_success:
+  - coveralls
+
+notifications:
+  webhooks:
+    urls:
+      - https://readthedocs.org/build/django-ldap-user-registration
+    on_start: never
+    on_cancel: never
+    on_error: never
+    on_failure: never
+on_success: always
