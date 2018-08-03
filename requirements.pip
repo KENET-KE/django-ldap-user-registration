@@ -5,6 +5,7 @@ attrs==18.1.0
 Babel==2.6.0
 certifi==2018.4.16
 chardet==3.0.4
+coverage==4.0.3
 dj-database-url==0.5.0
 Django==2.0.6
 django-anymail==3.0
@@ -31,6 +32,7 @@ Pygments==2.2.0
 pyparsing==2.2.0
 pytest==3.6.2
 pytest-django==3.3.2
+python-coveralls==2.9.1
 python-ldap==3.1.0
 pytz==2018.4
 PyYAML==3.13
