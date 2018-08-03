@@ -10,6 +10,10 @@ Welcome to django-ldap-user-registration's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   overview
+   installation
+   configuration
+
 
 
 Indices and tables
