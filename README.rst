@@ -2,10 +2,10 @@ Django LDAP User Registration
 =============================
 
 .. image:: https://coveralls.io/repos/github/KENET-KE/django-ldap-user-registration/badge.svg
-:target: https://coveralls.io/github/KENET-KE/django-ldap-user-registration
+    :target: https://coveralls.io/github/KENET-KE/django-ldap-user-registration
 .. image:: https://readthedocs.org/projects/django-ldap-user-registration/badge/?version=latest
-:target: https://django-ldap-user-registration.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status
+    :target: https://django-ldap-user-registration.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 .. image:: https://travis-ci.org/KENET-KE/django-ldap-user-registration.svg?branch=master
     :target: https://travis-ci.org/KENET-KE/django-ldap-user-registration
 
@@ -14,8 +14,6 @@ reset to an LDAP server.
 
 .. figure:: https://www.kenet.or.ke/sites/default/files/kenelogomedium.png
    :alt: KENET Research Services
-
-   KENET Research Services
 
 ..
 
@@ -66,3 +64,5 @@ Deployment
 
 The preferred and tested deployment method is through gunicorn. Details
 will be added here.
+
+.. _KENET Research Services: https://www.kenet.or.ke/research-services
