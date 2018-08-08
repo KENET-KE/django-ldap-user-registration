@@ -24,7 +24,7 @@ before_script:
   - python manage.py migrate
   - sudo apt-get purge slapd
   - export DEBIAN_FRONTEND=noninteractive
-  - cat test_data/ldap/debconf-slapd.conf | debconf-set-selections
+  - cat test_data/ldap/debconf-slapd.conf | sudo debconf-set-selections
   - sudo apt-get install ldap-utils slapd
   - sudo ldapadd -x -D cn=admin,dc=zion,dc=ac,dc=ke -w admin -f test_data/ldap/add_content.ldif
 
