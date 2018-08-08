@@ -19,9 +19,9 @@ IDP_CATCH_ALL = False
 LDAP_PROTO = 'ldap'
 LDAP_HOST = '127.0.0.1'
 LDAP_PORT = '389' # must be str
-LDAP_BASE_DN = 'ou=users,dc=example,dc=ac,dc=ke'
-LDAP_BIND_DN = 'cn=admin,dc=example,dc=ac,dc=ke'
-LDAP_BIND_DN_CREDENTIAL = 'my password'
+LDAP_BASE_DN = 'ou=People,dc=zion,dc=ac,dc=ke'
+LDAP_BIND_DN = 'cn=admin,dc=zion,dc=ac,dc=ke'
+LDAP_BIND_DN_CREDENTIAL = 'admin'
 LDAP_GID = "502" # group ID to add signed up users
 LDAP_BASE_UID = 1000 # Integer
 

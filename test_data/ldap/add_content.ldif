@@ -1,0 +1,29 @@
+dn: ou=People,dc=zion,dc=ac,dc=ke
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Groups,dc=zion,dc=ac,dc=ke
+objectClass: organizationalUnit
+ou: Groups
+
+dn: cn=users,ou=Groups,dc=zion,dc=ac,dc=ke
+objectClass: posixGroup
+cn: users
+gidNumber: 502
+
+# create test user
+dn: uid=john,ou=People,dc=zion,dc=ac,dc=ke
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: john
+sn: Doe
+givenName: John
+cn: John Doe
+displayName: John Doe
+uidNumber: 10000
+gidNumber: 502
+userPassword: johnldap
+gecos: John Doe
+loginShell: /bin/bash
+homeDirectory: /home/john
