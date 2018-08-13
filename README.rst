@@ -8,18 +8,11 @@ Django LDAP User Registration
     :alt: Documentation Status
 .. image:: https://travis-ci.org/KENET-KE/django-ldap-user-registration.svg?branch=master
     :target: https://travis-ci.org/KENET-KE/django-ldap-user-registration
+.. image:: https://img.shields.io/badge/code%20style-pep8-green.svg
+   :target: https://www.python.org/dev/peps/pep-0008/
 
 A Django web front-end that provides user registration and password
 reset to an LDAP server.
-
-.. figure:: https://www.kenet.or.ke/sites/default/files/kenelogomedium.png
-   :alt: KENET Research Services
-
-..
-
-   **Created by:** `KENET Research Services`_
-
-   **License:** GPLv3
 
 Features
 --------
@@ -27,42 +20,21 @@ Features
 1. User self registration with email account activation
 2. User self password reset (typical email reset workflow)
 
-Settings
---------
+.. figure:: https://www.kenet.or.ke/sites/default/files/kenelogomedium.png
+   :alt: KENET Research Services
 
-Create local settings as follows and adjust accordingly:
+..
 
-::
+   **Created by:** `KENET Research Services`
 
-   $ cp local_settings.py.default local_settings.py
 
-Adjust the Email and LDAP settings. Currently it is setup to add users
-to only one LDAP group. In the settings file this is set by the setting
-**LDAP_GID**
+Home page
+  https://www.kenet.or.ke/research-services
 
-Basic Commands
---------------
+Source code
+  https://github.com/KENET-KE/django-ldap-user-registration
 
-Setting Up Your Users
-~~~~~~~~~~~~~~~~~~~~~
-
-To create a **superuser account**, use this command:
-
-::
-
-   $ python manage.py createsuperuser
-
-Running tests with py.test
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-::
-
-     $ py.test
-
-Deployment
-----------
-
-The preferred and tested deployment method is through gunicorn. Details
-will be added here.
+Documentation
+  http://django-ldap-user-registration.readthedocs.io/en/latest/
 
 .. _KENET Research Services: https://www.kenet.or.ke/research-services
