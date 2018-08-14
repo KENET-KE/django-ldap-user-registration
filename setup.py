@@ -12,7 +12,7 @@ standard_exclude_directories = [
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django_ldap_user_registration',
+    name='django-ldap-user-registration',
     version='1.0',
     packages=find_packages(exclude=standard_exclude_directories),
     include_package_data=True,
