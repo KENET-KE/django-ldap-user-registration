@@ -29,19 +29,13 @@ before_script:
   - sudo ldapadd -x -D cn=admin,dc=zion,dc=ac,dc=ke -w admin -f test_data/ldap/add_content.ldif
 
 deploy:
-  provider: heroku
-  api_key:
-    secure: WWpdJuDt1xz/+ZVJVgD1hlVMmnyUf95+W+8aTrrDYWbirnUOFXIj5gJ9F2RxPziBoLSO8toCRSPG95UWBUgF59RbUX6mbEPwncJFgy/+LwV7khrxqcyjaL5HKVEmzxVtulTXuF+Ft83VD9TMMBVCJiqLXtDhoxiIdtUOtBu7a8OrI7vPcteZmMROYCbdhOZmUYoYWonJdiabjPefThlFLDeWWa05XpiXmGWKgCJ9lbDbJ83+vVLmWqTcAER7Sgd3ZgqSvedpVPzLEUge9+KhpKZXWcPE8Go7SEMJ/gytsG4Bg8/OQvThmrKvPf9iLPzXiEhg8OkkLKmtgSElIO2/9GA92nc/iApqoMoGM6WNqAOWBV+iQyC9lVP12rrp+LFbDG0tDJmjQ2EduZoLJLB7UxTTU2jcK++HHjVV8fUI7nwlMXju3CBbmN7SZCMlFALmshTeCEVpEGLTKVesa/AcPtXHGFAImjJcNc5pJ8TCpPlnwY4eFbe+SNpg17NCnl4iCEBAj6UXVd16aSYH33UvXfuZoC0UeyJWKqWxi+DDu94TabnvnUZqMWnoRAfNtQO2kankziLR/lhbKUC4qji6N2OwFjak8Mc3xKMaGm+tF25OyLroCSTaAMjKNo20rs1tB0VvmpXMjGeiJw0kclqnd+3HDldoExmc9mwrX4gQSpc=
-  app: django-ldap-user-registration
-  buildpack:
-   - node
-   - python
-  on:
-    repo: KENET-KE/django-ldap-user-registration
-  run:
-   - "export DJ_DEBUG=False"
-   - "export DATABASE_URL=postgres://postgres@localhost/travisdb"
-   - "python KENET-KE/django-ldap-user-registration/manage.py migrate"
+  provider: pypi
+  user: sureronald
+  password:
+    secure: "NAvtoAbdnKRHMKQzcCBBsANcaa48qG5kYEsDDy9vBLMViKbVLv6a05Rc9qpyLJIo80tpr+Yex68vy3Pe1Z0eMn7yAHcLRNnYmWQap9gpw+GYRMmZ0jFMhcYTewgxjcKbzvh3M44X9197BZPMFPLzfuWS1ycM17SKd8+i04O24netSHtorjn+QeND/D3pfTo+IVAmZ6kcw+77TxD24ydAJaZhDYfatxIOeosP7zqnIrxA7L58kTPlTI/BMLasAWU1/x0rfPCEbzqlZCqpbatElxNmhKqe6B1k0eWkQphptqPl6eNtWwPMgJZnbtysqmAzS2lWx8MdCJjWNf8u5nZFLkhQNpKm9vaUVb1r81QC22zoKXxDFGgMhYVi7/KwnMnyIlcTqv0dl5lkTT55Tvu+HpzBSnpACzImediES6cZ3JqsMzScw5mNJ2m0L7C8ypd25toW9POdB6N6WHEQDx11sv5fHTgg/mFG27vSbvpsK45JfK9I7hI16EbzTTNGOUYUXievPIdtkzJebTdEH5DBK427xjQIX4mHKwp5B6/SAeos/kJLPUO/h9tTXgSwNMnW1mPHwj9rNti5/4g1X5INcf3qkMHIxV3s7UuoexPAGCD92/dzWd6CWOd/iKo01FBQeVF0lviG87YAGpNSyswmRLoRiZYScNkpcVCbrNRjAj4="
+#  on:
+#    tags: true
+  server: https://test.pypi.org/legacy/
 
 script:
  - coverage run --source=user -m pytest
