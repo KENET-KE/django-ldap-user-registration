@@ -1,37 +1,39 @@
 Installation
 ============
 
-Django
-------
+Install
+-------
 
 Python package::
 
-    pip install django-allauth
+    pip install django-ldap-user-registration
 
 
-Django migrations
------------------
+Django setup
+------------
 
-In your Django root execute the command below to create your database tables::
-
-    ./manage.py migrate
-
-Django base settings
----------------------
-
-1. Add "user" to your INSTALLED_APPS setting like this::
+1. Add "user" to your INSTALLED_APPS setting like this plus the other required dependencies::
 
     INSTALLED_APPS = [
         ...
         'user',
+        'anymail',
+        'crispy_forms',
+        'bootstrap3',
     ]
 
-2. Include the user URLconf in your project urls.py like this::
+2. In your Django root execute the command below to create your database tables::
+
+    python manage.py migrate
+
+3. Include the user URLconf in your project urls.py like this::
 
     path('user/', include('user.urls')),
 
 
-3. add the following additional required settings::
+4. add the following to your settings file and adjust accordingly. Refer to configuration::
+
+    ...
 
     # Site
     SITE_BASE_URL = 'http://example.com' # No trailing slash
@@ -73,3 +75,25 @@ Django base settings
     DEFAULT_FROM_EMAIL = IDP_NAME + ' <support@example.com>'
 
     CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+5. Create superuser
+
+To create a **superuser account**, use this command:
+
+::
+
+   python manage.py createsuperuser
+
+6. Create institution
+
+Login to /admin and add institution using the credentials you just created above. It should be under `users`
+
+Run tests
+---------
+Running the unit tests is actually a good way of confirming that your settings made above are working fine::
+
+    python manage.py test user
+
+Fire up!
+--------
+Now fire up your browser and visit http://localhost/user/
