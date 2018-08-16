@@ -26,7 +26,10 @@ setup(
     keywords ='django ldap registration password reset idp federation catch-all',
     install_requires=[
         'Django >= 2.0',
-        'python-ldap>=3.1.0',
+        'python-ldap',
+        'django-bootstrap3',
+        'django-anymail',
+        'django-crispy-forms',
     ],
     classifiers=[
         'Environment :: Web Environment',
