@@ -13,7 +13,8 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-ldap-user-registration',
-    version='1.0',
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     packages=find_packages(exclude=standard_exclude_directories),
     include_package_data=True,
     license='GPL v3',  # example license

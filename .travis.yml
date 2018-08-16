@@ -2,7 +2,8 @@ sudo: true
 language: python
 
 python:
-  - 3.6.5
+  - 3.5
+  - 3.6
 
 services:
   - postgresql
@@ -33,8 +34,8 @@ deploy:
   user: sureronald
   password:
     secure: "AAsHrrIND/P2JO7N+M5ZbelPgYZ102/pWoOyey6kd+IabMePblUq6M28WZswEWwjoOVrODRi6tsGEnZQ0CJuN1NfRrGRLjXGoJkblALdLEiiRTXEZujhiYJFolcr+3zCi2EK67RkzvIfpsZ+blE1e+HwEF+Cc6rXS5H6IKxdFk+jPulBbh/anRpiKhctbjWgUnEDZPmFZcEfgcKpo6V1Ik58+kbUYQhCqMGR8ZCvk1jYSyiOylqyWpjLuPN/j3WLfidyVSldPdN5FBY93Gc++Tbw9REq/ZnnOP06+TzkXDe2X64sXPOjqmJMWkSZSNckEyiYs+KQgVbqlvs1bVUD8crY5hvLiUpAacOuNmQNN+4K4108I+xGajtdDiCF87lPK0U2SdqPpkVbJRoR4VKVQ495Oesw5eIkfVPT5ySu6j3rT9bziAqewnW/TIdYHr+L1Mk5a5bVPzt3FThxc6Nhnj5vJU1BgTShU/UFemeu1/+WtJHw9zHmlt31A4qRxSj9XeKaqT2GuIRELhDwwbGUbpOGgs/6TAm+X/Qe2aoM6tVzH3IZ1jhtwTTStXl0g6QTH16fD8JZRE7a/EZGnBhrqhAUOByhtbLJduEFuwHTUrFM8MoRB03H9OXqc3pIr42qt28gBv4qFOE3gOWkJ0oEHhnu3Fq6yhcB8yKGupglJks="
-#  on:
-#    tags: true
+  on:
+    tags: true
   server: https://test.pypi.org/legacy/
 
 script:
