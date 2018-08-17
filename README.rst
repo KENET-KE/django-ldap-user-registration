@@ -38,3 +38,13 @@ Documentation
   http://django-ldap-user-registration.readthedocs.io/en/latest/
 
 .. _KENET Research Services: https://www.kenet.or.ke/research-services
+
+Motivation for development
+--------------------------
+Having been involved with the setup of Identity Providers which use open LDAP as the authentication backend, I am yet to
+come acrossa FOSS solution for signing up users that provides a way for them to reset their passwords on their own.
+This has been a pain point when setting up identity providers because the only alternative an admin has is to login to
+the backend and manually reset their passwords.
+There is a commercial solution (ldap-account-manager) which I haven't tried and that is my main motivation to build an
+open solution. I haven't bothered with building an interface to manage LDAP since that already exists and I recommend
+ phpldapadmin (FOSS) for that.

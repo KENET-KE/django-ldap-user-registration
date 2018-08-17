@@ -13,6 +13,7 @@ Welcome to django-ldap-user-registration's documentation!
    overview
    installation
    configuration
+   development
 
 
 
