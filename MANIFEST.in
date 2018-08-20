@@ -1,6 +1,6 @@
 include LICENSE
 include README.rst
 recursive-exclude django_ldap_user_registration *
-recursive-include user/static *
-recursive-include user/templates *
+recursive-include dl_user/static *
+recursive-include dl_user/templates *
 recursive-include docs Makefile conf.py *.rst

@@ -10,7 +10,7 @@ from .passwd import PasswordUtils
 
 class IndexTestCase(TestCase):
     def test_index_load(self):
-        response = self.client.get(reverse('user:index'))
+        response = self.client.get(reverse('dl_user:index'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Register')
         self.assertContains(response, 'Forgot Password')
@@ -51,39 +51,39 @@ class RegistrationTestCase(TestCase):
         return user_rr.reset_code
 
     def test_registration_page_load(self):
-        response = self.client.get(reverse('user:register'))
+        response = self.client.get(reverse('dl_user:register'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Create an account')
 
     def test_register_and_reset(self):
-        response = self.client.post(reverse('user:register'), self.data, follow=True)
+        response = self.client.post(reverse('dl_user:register'), self.data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Successfully registered!')
 
         # test activation too
         activation_code = self.get_user_activation_code(self.data['username'])
-        response = self.client.get(reverse('user:register_activate', kwargs={'activation_code': activation_code}))
+        response = self.client.get(reverse('dl_user:register_activate', kwargs={'activation_code': activation_code}))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Your account is now active!")
 
         # test password reset
-        response = self.client.get(reverse('user:password_reset'))
+        response = self.client.get(reverse('dl_user:password_reset'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Password Reset')
 
-        response = self.client.post(reverse('user:password_reset'), { 'email': self.data['email'] }, follow=True)
+        response = self.client.post(reverse('dl_user:password_reset'), { 'email': self.data['email'] }, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Password reset sent')
 
         # test password edit
         reset_code = self.get_password_reset_code(self.data['username'])
-        response = self.client.get(reverse('user:password_edit', kwargs={'token': reset_code}))
+        response = self.client.get(reverse('dl_user:password_edit', kwargs={'token': reset_code}))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Enter New Password')
 
         new_password = self.passwd.getsalt(length=16)
         response = self.client.post(
-            reverse('user:password_edit', kwargs={'token': reset_code}),
+            reverse('dl_user:password_edit', kwargs={'token': reset_code}),
             {'password': new_password, 'password1': new_password},
             follow=True
         )

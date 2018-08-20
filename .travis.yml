@@ -38,7 +38,7 @@ deploy:
     tags: true
 
 script:
- - coverage run --source=user -m pytest
+ - coverage run --source=dl_user -m pytest
 
 after_success:
   - coveralls

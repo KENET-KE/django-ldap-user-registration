@@ -20,11 +20,11 @@ from .exceptions import PasswordResetException
 
 class IndexView(generic.TemplateView):
     # Index View
-    template_name = 'user/index.html'
+    template_name = 'dl_user/index.html'
 
 
 class RegisterView(generic.FormView):
-    template_name = 'user/register.html'
+    template_name = 'dl_user/register.html'
     form_class = UserRegisterForm
     success_url = '/user/register/success/'
 
@@ -70,7 +70,7 @@ class RegisterView(generic.FormView):
 
 
 class RegisterSuccessView(generic.TemplateView):
-    template_name = 'user/register_success.html'
+    template_name = 'dl_user/register_success.html'
 
 
 class RegisterActivateView(generic.View):
@@ -120,7 +120,7 @@ class RegisterActivateView(generic.View):
             user.is_active = True
             user.save()
 
-        return render(request, 'user/register_activate_success.html', {
+        return render(request, 'dl_user/register_activate_success.html', {
             'result': result,
             'message': "Your account is now active!",
         })
@@ -142,7 +142,7 @@ class RegisterActivateView(generic.View):
 
 
 class PasswordResetView(generic.FormView):
-    template_name = 'user/password_reset.html'
+    template_name = 'dl_user/password_reset.html'
     form_class = PasswordResetForm
     success_url = '/user/password/reset/success/'
 
@@ -173,11 +173,11 @@ class PasswordResetView(generic.FormView):
 
 
 class PasswordResetSuccessView(generic.TemplateView):
-    template_name = 'user/password_reset_success.html'
+    template_name = 'dl_user/password_reset_success.html'
 
 
 class PasswordEditView(generic.View):
-    template_name = 'user/password_edit.html'
+    template_name = 'dl_user/password_edit.html'
 
     def get(self, request, token):
         self.check_token_validity(token)
@@ -225,4 +225,4 @@ class PasswordEditView(generic.View):
 
 
 class PasswordEditSuccessView(generic.TemplateView):
-    template_name = 'user/password_edit_success.html'
+    template_name = 'dl_user/password_edit_success.html'

@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('user', '0006_userregistrationrecord_ldap_password'),
+        ('dl_user', '0006_userregistrationrecord_ldap_password'),
     ]
 
     operations = [

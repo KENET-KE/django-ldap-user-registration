@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-2">
-            <a href="{% url 'user:index' %}"><img width="200" src="{{IDP_LOGO}}" alt="{{IDP_NAME}}" /></a>
+            <a href="{% url 'dl_user:index' %}"><img width="200" src="{{IDP_LOGO}}" alt="{{IDP_NAME}}" /></a>
         </div>
         <div class="col-md-10">
             <h1>{{ IDP_NAME }} User Support</h1>
@@ -24,8 +24,8 @@
     </div>
     {% block wrapper %}
     <h2>Don't have a Federated Identity yet? proceed and register below</h2>
-    <a href="{% url 'user:register' %}" class="btn btn-success btn-lg" role="button">Register</a>
-    <a href="{% url 'user:password_reset' %}" class="btn btn-warning btn-lg" role="button">Forgot Password</a>
+    <a href="{% url 'dl_user:register' %}" class="btn btn-success btn-lg" role="button">Register</a>
+    <a href="{% url 'dl_user:password_reset' %}" class="btn btn-warning btn-lg" role="button">Forgot Password</a>
     <p>If you already have a Federated ID, you can test your login credentials at:
         <a href="{{ SERVICE_PROVIDER_URL }}" class="btn btn-danger btn-sm" role="button">{{ SERVICE_PROVIDER }}</a>
     </p>

@@ -16,7 +16,7 @@ Django setup
 
     INSTALLED_APPS = [
         ...
-        'user',
+        'dl_user',
         'anymail',
         'crispy_forms',
         'bootstrap3',
@@ -28,7 +28,7 @@ Django setup
 
 3. Include the user URLconf in your project urls.py like this::
 
-    path('user/', include('user.urls')),
+    path('user/', include('dl_user.urls')),
 
 
 4. add the following to your settings file and adjust accordingly. Refer to configuration::
