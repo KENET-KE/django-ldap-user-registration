@@ -12,7 +12,7 @@ Python package::
 Django setup
 ------------
 
-1. Add "user" to your INSTALLED_APPS setting like this plus the other required dependencies::
+1. Add "dl_user" to your INSTALLED_APPS setting like this plus the other required dependencies::
 
     INSTALLED_APPS = [
         ...
@@ -28,10 +28,13 @@ Django setup
 
 3. Include the user URLconf in your project urls.py like this::
 
+    from django.urls import include
+    ...
+
     path('user/', include('dl_user.urls')),
 
 
-4. add the following to your settings file and adjust accordingly. Refer to configuration::
+4. add the following to your settings (local) file and adjust accordingly. Refer to configuration::
 
     ...
 
@@ -96,4 +99,4 @@ Running the unit tests is actually a good way of confirming that your settings m
 
 Fire up!
 --------
-Now fire up your browser and visit http://localhost/user/
+Now fire up your browser and visit http://localhost:8000/user/
