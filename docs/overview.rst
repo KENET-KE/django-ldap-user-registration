@@ -1,7 +1,7 @@
 Overview
 ========
 
-A Django web front-end that provides user registration and password
+A Django web app that provides user registration and password
 reset to an LDAP server.
 
 .. figure:: https://www.kenet.or.ke/sites/default/files/kenelogomedium.png
