@@ -95,7 +95,7 @@ Run tests
 ---------
 Running the unit tests is actually a good way of confirming that your settings made above are working fine::
 
-    python manage.py test user
+    python manage.py test dl_user
 
 Fire up!
 --------

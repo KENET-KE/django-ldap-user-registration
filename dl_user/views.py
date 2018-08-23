@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.urls import reverse_lazy
+from django.urls import reverse
 
 from .forms import UserRegisterForm
 from .forms import PasswordResetForm
@@ -26,7 +28,7 @@ class IndexView(generic.TemplateView):
 class RegisterView(generic.FormView):
     template_name = 'dl_user/register.html'
     form_class = UserRegisterForm
-    success_url = '/user/register/success/'
+    success_url = reverse_lazy('dl_user:register_success')
 
     def form_valid(self, form):
         passwd_util = PasswordUtils()
@@ -61,8 +63,7 @@ class RegisterView(generic.FormView):
         )
 
         # send notification and activation email alert
-        activate_link = settings.SITE_BASE_URL + '/user/register/activate/' + token + '/'
-
+        activate_link = settings.SITE_BASE_URL + reverse('dl_user:register_activate', args=[token]) + '/'
         send_newly_registered_email(user.email, settings.DEFAULT_FROM_EMAIL,
                                   user.get_full_name(), activate_link, settings.IDP_NAME)
 
@@ -144,7 +145,7 @@ class RegisterActivateView(generic.View):
 class PasswordResetView(generic.FormView):
     template_name = 'dl_user/password_reset.html'
     form_class = PasswordResetForm
-    success_url = '/user/password/reset/success/'
+    success_url = reverse_lazy('dl_user:password_reset_success')
 
     def form_valid(self, form):
         """
@@ -164,7 +165,7 @@ class PasswordResetView(generic.FormView):
         user_reg_record.reset_code_expiry = expiry
         user_reg_record.save()
 
-        reset_link = settings.SITE_BASE_URL + '/user/password/edit/' + token + '/'
+        reset_link = settings.SITE_BASE_URL + reverse('dl_user:password_edit', args=[token])  + '/'
         # send email
         send_reset_password_email(user.email, settings.DEFAULT_FROM_EMAIL,
                                   user.get_full_name(), reset_link, settings.IDP_NAME)
@@ -203,7 +204,7 @@ class PasswordEditView(generic.View):
                 user_rr.reset_code_active = False
                 user_rr.ldap_password = password
                 user_rr.save()
-                return redirect('/user/password/edit/success/')
+                return redirect(reverse('dl_user:password_edit_success'))
             else:
                 return render(request, self.template_name, {
                     'form': form,
