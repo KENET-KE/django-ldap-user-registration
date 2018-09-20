@@ -1,0 +1,37 @@
+{% extends "dl_user/index.html" %}
+{% block title %}Manage user registration records{% endblock %}
+{% block wrapper %}
+<h1>User Registration Records</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Organization</th>
+        <th>Title</th>
+        <th>Designation</th>
+        <th>Department</th>
+        <th>Address</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in object_list %}
+    <tr>
+        <td>{{ user.user.first_name }}</td>
+        <td>{{ user.user.last_name }}</td>
+        <td>{{ user.user.email }}</td>
+        <td>{{ user.gender }}</td>
+        <td>{{ user.organization }}</td>
+        <td>{{ user.title }}</td>
+        <td>{{ user.designation }}</td>
+        <td>{{ user.department }}</td>
+        <td>{{ user.address }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="9" align="center"><h3>No users yet</h3></td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

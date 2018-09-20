@@ -227,3 +227,11 @@ class PasswordEditView(generic.View):
 
 class PasswordEditSuccessView(generic.TemplateView):
     template_name = 'dl_user/password_edit_success.html'
+
+
+class UserRrAdminManager(generic.ListView):
+    """
+    Provides an interface for managing the signed up users. Admin can approve/deny sign-up requests
+    """
+    model = UserRegistrationRecord
+    paginate_by = 10
