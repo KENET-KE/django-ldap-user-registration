@@ -20,6 +20,7 @@ class UserRegistrationRecord(models.Model):
     reset_code = models.CharField(max_length=255, default='') # used to hold activation code for registration too
     reset_code_active = models.BooleanField(default=False)
     reset_code_expiry = models.DateTimeField(null=True)
+    verified = models.BooleanField(default=False)
 
     # user data
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -5,9 +5,12 @@
 <table class="table">
     <thead>
     <tr>
+        <th>&nbsp;</th>
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
+        <th>Verified</th>
+        <th>Active</th>
         <th>Gender</th>
         <th>Organization</th>
         <th>Title</th>
@@ -19,10 +22,44 @@
     <tbody>
     {% for user in object_list %}
     <tr>
+        <td>
+            {{ forloop.counter }}
+        </td>
         <td>{{ user.user.first_name }}</td>
         <td>{{ user.user.last_name }}</td>
         <td>{{ user.user.email }}</td>
-        <td>{{ user.gender }}</td>
+        <td>
+            {% if user.verified %}
+            Yes
+            {% else %}
+            No
+            <button type="button" class="btn btn-success btn-xs" aria-label="Verify">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                Verify
+            </button>
+            {% endif %}
+        </td>
+        <td>
+            {% if user.user.is_active %}
+            Yes
+            {% else %}
+            No
+            {% if user.verified %}
+            {# Show button to activate only if user account is verified #}
+            <button type="button" class="btn btn-warning btn-xs" aria-label="Activate">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                Activate
+            </button>
+            {% endif %}
+            {% endif %}
+        </td>
+        <td>
+            {% if user.gender %}
+            Male
+            {% else %}
+            Femail
+            {% endif %}
+        </td>
         <td>{{ user.organization }}</td>
         <td>{{ user.title }}</td>
         <td>{{ user.designation }}</td>
