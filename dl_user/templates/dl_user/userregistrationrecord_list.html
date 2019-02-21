@@ -25,7 +25,11 @@
         <td>
             {{ forloop.counter }}
         </td>
-        <td>{{ user.user.first_name }}</td>
+        <td>
+            <a href="{% url 'dl_user:manage_user_view' user.pk %}">
+                {{ user.user.first_name }}
+            </a>
+        </td>
         <td>{{ user.user.last_name }}</td>
         <td>{{ user.user.email }}</td>
         <td>
@@ -33,7 +37,7 @@
             Yes
             {% else %}
             No
-            <button type="button" class="btn btn-success btn-xs" aria-label="Verify">
+            <button type="button" class="btn btn-success btn-xs" aria-label="Verify" title="Manually verify email">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 Verify
             </button>
@@ -46,7 +50,7 @@
             No
             {% if user.verified %}
             {# Show button to activate only if user account is verified #}
-            <button type="button" class="btn btn-warning btn-xs" aria-label="Activate">
+            <button type="button" class="btn btn-warning btn-xs" aria-label="Activate" title="Activate">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 Activate
             </button>
@@ -57,7 +61,7 @@
             {% if user.gender %}
             Male
             {% else %}
-            Femail
+            Female
             {% endif %}
         </td>
         <td>{{ user.organization }}</td>

@@ -234,4 +234,8 @@ class UserRrAdminManager(generic.ListView):
     Provides an interface for managing the signed up users. Admin can approve/deny sign-up requests
     """
     model = UserRegistrationRecord
-    paginate_by = 10
+    paginate_by = 50
+
+
+class AdminUserDetailView(generic.DetailView):
+    model = UserRegistrationRecord
