@@ -1,8 +1,8 @@
-{% extends "dl_user/index.html" %}
-{% block title %}Create an account{% endblock %}
-{% block wrapper %}
-    <div class="row">
-        <h2>You are registering to the {{ IDP_NAME }}</h2>
+{% extends "dl_user/base.html" %}
+{% block bootstrap3_title %}Create an account{% endblock %}
+{% block content %}
+    <h2>Registering a new account</h2>
+    <p>You are registering to the {{ settings.IDP_NAME }}</p>
     </div>
     {% if form.errors %}
     <div class="alert alert-danger">

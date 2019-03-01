@@ -3,7 +3,7 @@ Configuration
 
 Available settings:
 
-SITE_BASE_URL = 'http://example.com' # No trailing slash
+SITE_BASE_URL = 'http://example.com' # No trailing slash!
 
 TIME_ZONE = 'Africa/Nairobi'
 
@@ -31,7 +31,7 @@ LDAP_BASE_UID = 1000 # Integer
 
 # Password Reset
 
-PASSWORD_RESET_TOKEN_EXPIRY = 2 #Hours
+PASSWORD_RESET_TOKEN_EXPIRY = 2 # Hours
 
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
@@ -41,4 +41,41 @@ ANYMAIL = {
 
 DEFAULT_FROM_EMAIL = IDP_NAME + ' <support@example.com>'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+SETTINGS_EXPORT = [
+	'RECAPTCHA_PUBLIC_KEY',
+	'IDP_NAME',
+	'IDP_LOGO',
+	'SERVICE_PROVIDER',
+	'SERVICE_PROVIDER_URL',
+	'STATIC_URL',
+	'LANGUAGE_CODE',
+]
+
+# reCaptcha to protect registration and password change from robots
+# Get keys here: https://www.google.com/recaptcha/admin
+# Only reCAPTCHA v2 is supported
+
+RECAPTCHA_PUBLIC_KEY = ''
+RECAPTCHA_PRIVATE_KEY = ''
+
+# Registration form can be simplified to your real needs. You can optionally
+# remove some parts of the form, removing them from the LDAP_USER_DATA list.
+#
+# LDAP Schema will include all required fields anyway, so you are able to extend
+# the registration process in future again, just adding parts you've deleted
+# before.
+
+LDAP_USER_DATA = [
+        'Personal Data',
+        'Organization',
+        'Address',
+]
+
+# Bootstrap theme
+# Optionally, you can chose one of many themes available from https://bootswatch.com/3/
+
+BOOTSTRAP3 = {
+        "theme_url": "https://bootswatch.com/3/flatly/bootstrap.min.css",
+}

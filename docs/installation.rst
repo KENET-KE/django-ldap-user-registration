@@ -20,6 +20,9 @@ Django setup
         'anymail',
         'crispy_forms',
         'bootstrap3',
+        'captcha',
+        'django_countries',
+        'django-settings-export',
     ]
 
 2. In your Django root execute the command below to create your database tables::
@@ -78,6 +81,36 @@ Django setup
     DEFAULT_FROM_EMAIL = IDP_NAME + ' <support@example.com>'
 
     CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+    ## Next configuration parameters are optional, but captcha is hihly
+    ## recommended if you host an open internet site
+
+    # reCaptcha to protect registration and password change from robots
+    # Get keys here: https://www.google.com/recaptcha/admin
+    # Only reCAPTCHA v2 is supported
+
+    RECAPTCHA_PUBLIC_KEY = ''
+    RECAPTCHA_PRIVATE_KEY = ''
+
+    # Registration form can be simplified to your real needs. You can optionally
+    # remove some parts of the form, removing them from the LDAP_USER_DATA list.
+    #
+    # LDAP Schema will include all required fields anyway, so you are able to extend
+    # the registration process in future again, just adding parts you've deleted
+    # before.
+
+    LDAP_USER_DATA = [
+        'Personal Data',
+        'Organization',
+        'Address',
+    ]
+
+    # Bootstrap theme
+    # Optionally, you can chose one of many themes available from https://bootswatch.com/3/
+
+    BOOTSTRAP3 = {
+        "theme_url": "https://bootswatch.com/3/flatly/bootstrap.min.css",
+    }
 
 5. Create superuser
 

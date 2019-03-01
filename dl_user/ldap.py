@@ -20,23 +20,23 @@ class LDAPOperations():
         except ldap.SERVER_DOWN:
             raise ldap.SERVER_DOWN('The LDAP library can’t contact the LDAP server. Contact the admin.')
 
-    def check_attribute(self,attribute,value):
+    def check_attribute(self, attribute, value):
         """
         Takes an attribute and value and checks it against the LDAP server for existence/availability.
         This is mainly for checking unique attributes ie uid, mail, uidNumber
-        
+
         :param attribute:
         :param value
         :return: tuple
         """
-        query = "("+ attribute + "=" + value + ")"
+        query = "(" + attribute + "=" + value + ")"
         result = self.con.search_s(settings.LDAP_BASE_DN, ldap.SCOPE_SUBTREE, query)
         return result
 
     def add_user(self, modlist):
         """
         example param modlist dict should look like below containing only strings:
-        
+
         modlist = {
             "objectClass": ["inetOrgPerson", "posixAccount", "shadowAccount"],
             "uid": ["jdoe"],
@@ -51,29 +51,30 @@ class LDAPOperations():
             "loginShell": ["/bin/bash"],
             "homeDirectory": ["/home/users/jdoe"]
         }
-        
-        :param modlist: 
+
+        :param modlist:
         :return: tuple
-        
+
         """
         dn = 'uid=' + modlist['uid'][0] + ',' + settings.LDAP_BASE_DN
 
         # convert modlist to bytes form ie b'abc'
         modlist_bytes = {}
         for key in modlist.keys():
-            modlist_bytes[key] = [i.encode('utf-8') for i in modlist[key]]
+            modlist_bytes[key] = [i.encode('utf-8') for i in modlist[key] if i
+                                  is not None]
 
         result = self.con.add_s(dn, addModlist(modlist_bytes))
         return result
 
-    def set_password(self,username,password):
+    def set_password(self, username, password):
         """
         set user password
-        :param username: 
-        :param password: 
+        :param username:
+        :param password:
         :return: ldap result
         """
-        dn = "uid=%s,%s" % (username,settings.LDAP_BASE_DN,)
+        dn = "uid=%s,%s" % (username, settings.LDAP_BASE_DN,)
         user_result = self.check_attribute('uid', username)  # get user
         tmp_modlist = dict(user_result)
         old_value = {"userPassword": [tmp_modlist[dn]['userPassword'][0]]}
@@ -83,7 +84,7 @@ class LDAPOperations():
         result = self.con.modify_s(dn, modlist)
         return result
 
-    def delete_user(self,username):
+    def delete_user(self, username):
         dn = "uid=%s,%s" % (username, settings.LDAP_BASE_DN,)
         response = self.con.delete_s(dn)
         return response

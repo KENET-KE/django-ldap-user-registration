@@ -22,7 +22,7 @@ from .exceptions import PasswordResetException
 
 class IndexView(generic.TemplateView):
     # Index View
-    template_name = 'dl_user/index.html'
+    template_name = 'dl_user/home.html'
 
 
 class RegisterView(generic.FormView):
@@ -63,9 +63,9 @@ class RegisterView(generic.FormView):
         )
 
         # send notification and activation email alert
-        activate_link = settings.SITE_BASE_URL + reverse('dl_user:register_activate', args=[token]) + '/'
+        activate_link = settings.SITE_BASE_URL + reverse('dl_user:register_activate', args=[token])
         send_newly_registered_email(user.email, settings.DEFAULT_FROM_EMAIL,
-                                  user.get_full_name(), activate_link, settings.IDP_NAME)
+                                    user.get_full_name(), activate_link, settings.IDP_NAME)
 
         return super().form_valid(form)
 
@@ -151,21 +151,21 @@ class PasswordResetView(generic.FormView):
         """
         1. get user by the provided email from db (die silently if there's none)
         2. if exists and is active, send reset email
-        :param form: 
-        :return: 
+        :param form:
+        :return:
         """
         passwd_util = PasswordUtils()
         email = form.cleaned_data.get('email')
         user = User.objects.get(email=email)
         user_reg_record = UserRegistrationRecord.objects.get(user=user)
-        token = passwd_util.getsalt(length=60) # re-use salt method to generate unique token
+        token = passwd_util.getsalt(length=60)  # re-use salt method to generate unique token
         expiry = timezone.now() + timedelta(hours=settings.PASSWORD_RESET_TOKEN_EXPIRY)
         user_reg_record.reset_code = token
         user_reg_record.reset_code_active = True
         user_reg_record.reset_code_expiry = expiry
         user_reg_record.save()
 
-        reset_link = settings.SITE_BASE_URL + reverse('dl_user:password_edit', args=[token])  + '/'
+        reset_link = settings.SITE_BASE_URL + reverse('dl_user:password_edit', args=[token])
         # send email
         send_reset_password_email(user.email, settings.DEFAULT_FROM_EMAIL,
                                   user.get_full_name(), reset_link, settings.IDP_NAME)
@@ -215,7 +215,7 @@ class PasswordEditView(generic.View):
                 'form': form,
             })
 
-    def check_token_validity(self,token):
+    def check_token_validity(self, token):
         try:
             user_rr = UserRegistrationRecord.objects.get(reset_code=token,
                                                          reset_code_active=True,
