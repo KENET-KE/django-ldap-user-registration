@@ -1,6 +1,9 @@
-{% extends "dl_user/index.html" %}
-{% block title %}Account creation success!{% endblock %}
-{% block wrapper %}
-<h1>Successfully registered!</h1>
-<h2 class="text-success">A verification email has been sent to your account</h2>
+{% extends "dl_user/base.html" %}
+{% load bootstrap3 %}
+{% block bootstrap3_title %}Account creation success!{% endblock %}
+{% block content %}
+    <h2>Success!</h2>
+    <p>Now you need to confirm registration</p>
+    {% bootstrap_alert "A verification email has been sent to your account. Please follow instructions according to the email content." alert_type="info" dismissable=False %}
+</div>
 {% endblock %}

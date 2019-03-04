@@ -8,12 +8,13 @@ from .models import UserRegistrationRecord
 from .ldap import LDAPOperations
 from .passwd import PasswordUtils
 
+
 class IndexTestCase(TestCase):
     def test_index_load(self):
-        response = self.client.get(reverse('dl_user:index'))
+        response = self.client.get(reverse('dl_user:home'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Register')
-        self.assertContains(response, 'Forgot Password')
+        self.assertContains(response, 'Forgotten password')
 
 
 class RegistrationTestCase(TestCase):
@@ -23,20 +24,20 @@ class RegistrationTestCase(TestCase):
         self.institution = Institution.objects.create(name='Wakanda')
         self.user_password = self.passwd.getsalt(length=16) # some random chars to be the password
         self.data = {
-            'first_name': 'Test',
-            'last_name': 'User',
+            'first_name': 'John',
+            'last_name': 'Doe',
             'gender': '0',
-            'email': 'sureronald@example.com',
+            'email': 'jdoe@example.com',
             'title': 'Mr.',
             'designation': 'H@cker',
             'department': 'R Labs',
             'organization': self.institution.name,
-            'username': 'ros1234',
+            'username': 'jdoe',
             'password': self.user_password,
             'password1': self.user_password,
             'phone': '027342424234',
             'address': 'University Way, Nairobi',
-            'country': 'Kenya'
+            'country': 'KE'
         }
 
     def get_user_activation_code(self, username):
@@ -58,7 +59,7 @@ class RegistrationTestCase(TestCase):
     def test_register_and_reset(self):
         response = self.client.post(reverse('dl_user:register'), self.data, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Successfully registered!')
+        self.assertContains(response, 'Success!')
 
         # test activation too
         activation_code = self.get_user_activation_code(self.data['username'])

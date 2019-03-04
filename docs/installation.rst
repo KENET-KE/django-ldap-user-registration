@@ -20,6 +20,8 @@ Django setup
         'anymail',
         'crispy_forms',
         'bootstrap3',
+        'captcha',
+        'django_countries',
     ]
 
 2. In your Django root execute the command below to create your database tables::
@@ -38,8 +40,14 @@ Django setup
 
     ...
 
+    import sys
+
+    # a clean way to find out if we are in unit test mode
+
+    TESTING = sys.argv[1:2] == ['test']
+
     # Site
-    SITE_BASE_URL = 'http://example.com' # No trailing slash
+    SITE_BASE_URL = 'http://example.com'  # No trailing slash
 
     TIME_ZONE = 'Africa/Nairobi'
 
@@ -58,16 +66,28 @@ Django setup
 
     LDAP_PROTO = 'ldap'
     LDAP_HOST = '127.0.0.1'
-    LDAP_PORT = '389' # must be str
+    LDAP_PORT = '389'  # must be str
     LDAP_BASE_DN = 'ou=People,dc=zion,dc=ac,dc=ke'
     LDAP_BIND_DN = 'cn=admin,dc=zion,dc=ac,dc=ke'
-    LDAP_BIND_DN_CREDENTIAL = '<your password>'
-    LDAP_GID = "502" # group ID to add signed up users
-    LDAP_BASE_UID = 1000 # Integer
+    LDAP_BIND_DN_CREDENTIAL = 'admin'
+    LDAP_GID = "502"  # group ID to add signed up users
+    LDAP_BASE_UID = 1000  # Integer
 
+    # Registration form can be simplified to your real needs. You can optionally
+    # remove some parts of the form, removing them from the LDAP_USER_DATA list.
+    #
+    # LDAP Schema will include all required fields anyway, so you are able to extend
+    # the registration process in future again, just adding parts you've deleted
+    # before.
+
+    LDAP_USER_DATA = [
+        'Personal Data',
+        'Organization',
+        'Address',
+    ]
     # Password Reset
 
-    PASSWORD_RESET_TOKEN_EXPIRY = 2 #Hours
+    PASSWORD_RESET_TOKEN_EXPIRY = 2  # Hours
 
     EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
@@ -78,6 +98,39 @@ Django setup
     DEFAULT_FROM_EMAIL = IDP_NAME + ' <support@example.com>'
 
     CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+    # Next configuration parameters are optional, but captcha is highly
+    # recommended if you host an open internet site
+
+    SETTINGS_EXPORT = [
+        'RECAPTCHA_PUBLIC_KEY',
+        'IDP_NAME',
+        'IDP_LOGO',
+        'SERVICE_PROVIDER',
+        'SERVICE_PROVIDER_URL',
+        'STATIC_URL',
+        'LANGUAGE_CODE',
+        'SITE_BASE_URL'
+    ]
+
+    # reCaptcha to protect registration and password change from robots
+    # Get keys here: https://www.google.com/recaptcha/admin
+    # Only reCAPTCHA v2 is supported
+    # You can use the keys below for testing:
+    #
+    # RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+    # RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+    # SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']  # Silence checks
+
+    RECAPTCHA_PUBLIC_KEY = ''
+    RECAPTCHA_PRIVATE_KEY = ''
+
+    # Bootstrap theme
+    # Optionally, you can chose one of many themes available from https://bootswatch.com/3/
+
+    BOOTSTRAP3 = {
+        "theme_url": "https://bootswatch.com/3/flatly/bootstrap.min.css",
+    }
 
 5. Create superuser
 

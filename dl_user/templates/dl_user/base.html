@@ -1,0 +1,36 @@
+{% extends 'dl_user/bootstrap.html' %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% block bootstrap3_content %}
+{% url 'dl_user:register' as register_url %}
+{% url 'dl_user:password_reset' as password_reset_url %}
+    <nav class="navbar navbar-inverse">
+	<div class="container">
+	    <div class="navbar-header">
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		    <span class="sr-only">Toggle navigation</span>
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		</button>
+                <a class="navbar-brand" href="{% url 'dl_user:home' %}">{{ settings.IDP_NAME }} User Support</a>
+	    </div>
+	    <div id="navbar" class="collapse navbar-collapse">
+		<ul class="nav navbar-nav">
+                    <!-- navigation can be extended in future if needed >
+		    <li class="active"><a href="{% url 'dl_user:home' %}">Home</a></li>
+		    <li><a href="{% url 'dl_user:register' %}">Register</a></li>
+		    <li><a href="{% url 'dl_user:password_reset' %}">Change password</a></li>
+                    -->
+		</ul>
+	    </div><!-- /.nav-collapse -->
+	</div><!-- /.container -->
+    </nav><!-- /.navbar -->
+    <div class="container">
+	<div class="jumbotron">
+            {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
+	    <a href="{% url 'dl_user:home' %}"><img class="img-fluid" src="{{settings.IDP_LOGO}}" alt="{{settings.IDP_NAME}}" /></a>
+    {% block content %}
+    {% endblock %}
+{% endblock %}
+{% bootstrap_javascript %}

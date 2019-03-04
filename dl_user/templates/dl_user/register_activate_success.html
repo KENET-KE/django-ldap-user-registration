@@ -1,6 +1,8 @@
-{% extends "dl_user/index.html" %}
-{% block title %}Account activation success!{% endblock %}
-{% block wrapper %}
-<h1 class="text-success">{{ message }}</h1>
-<h2>Proceed to <a href="{{ SERVICE_PROVIDER_URL }}">{{ SERVICE_PROVIDER }}</a> to try out your login credentials</h2>
+{% extends "dl_user/base.html" %}
+{% load bootstrap3 %}¬
+{% block bootstrap3_title %}Account activation success!{% endblock %}
+{% block content %}
+    <h2 class="text-success">{{ message }}</h2>
+    <p>Please proceed to <a href="{{ settings.SERVICE_PROVIDER_URL }}">{{ settings.SERVICE_PROVIDER }}</a> to try out your login credentials</p>
+</div>
 {% endblock %}

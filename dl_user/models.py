@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Institution(models.Model):
     name = models.CharField(max_length=255, null=True)
 
@@ -17,7 +18,7 @@ class UserRegistrationRecord(models.Model):
         even keeping the passwords. They belong to LDAP!
     """
     # controls
-    reset_code = models.CharField(max_length=255, default='') # used to hold activation code for registration too
+    reset_code = models.CharField(max_length=255, default='')  # used to hold activation code for registration too
     reset_code_active = models.BooleanField(default=False)
     reset_code_expiry = models.DateTimeField(null=True)
     verified = models.BooleanField(default=False)
@@ -25,13 +26,13 @@ class UserRegistrationRecord(models.Model):
     # user data
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ldap_password = models.CharField(max_length=128, blank=True, null=True)
-    gender = models.CharField(max_length=10, blank=True)
-    title = models.CharField(max_length=30, blank=True)
-    designation = models.CharField(max_length=200, blank=True)
-    department = models.CharField(max_length=200, blank=True)
+    gender = models.CharField(max_length=10, blank=True, null=True)
+    title = models.CharField(max_length=30, blank=True, null=True)
+    designation = models.CharField(max_length=200, blank=True, null=True)
+    department = models.CharField(max_length=200, blank=True, null=True)
     organization = models.CharField(max_length=255, blank=True, null=True)
-    phone = models.CharField(max_length=200, blank=True)
-    address = models.TextField(blank=True)
+    phone = models.CharField(max_length=200, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
