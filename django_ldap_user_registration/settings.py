@@ -26,9 +26,6 @@ from django_ldap_user_registration.local_settings import *
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 's77o2h44iieig-5m&j1zdx0l+(c67jwu-vm1p9+ycul6lp@o$d'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -45,6 +42,8 @@ INSTALLED_APPS = [
     'anymail',
     'crispy_forms',
     'bootstrap3',
+    'captcha',
+    'django_countries'
 ]
 
 MIDDLEWARE = [
@@ -70,7 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'dl_user.context_processors.site',
+                'django_settings_export.settings_export'
             ],
         },
     },

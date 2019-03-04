@@ -47,7 +47,9 @@ class UserRegisterForm(forms.Form):
     email = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput, min_length=8)
     password1 = forms.CharField(widget=forms.PasswordInput, min_length=8, label='Confirm Password')
-    captcha = ReCaptchaField()
+    # hide captcha field during unit tests
+    if not settings.TESTING:
+        captcha = ReCaptchaField()
 
     def __init__(self, *args, **kwargs):
         super(UserRegisterForm, self).__init__(*args, **kwargs)
@@ -74,7 +76,7 @@ class UserRegisterForm(forms.Form):
         if "Personal Data" in settings.LDAP_USER_DATA:
             self.helper.layout.append(
                                       Fieldset('Personal Data',
-                                               'gender', 'title', 'designation', 'department'))
+                                               'gender', 'title', 'designation', 'department', 'phone'))
         if "Organization" in settings.LDAP_USER_DATA:
             self.helper.layout.append(
                                       Fieldset('Organization', 'organization'))
@@ -126,7 +128,9 @@ class UserRegisterForm(forms.Form):
 
 
 class PasswordResetForm(forms.Form):
-    captcha = ReCaptchaField()
+    # hide captcha field during unit tests
+    if not settings.TESTING:
+        captcha = ReCaptchaField()
     email = forms.EmailField(
         required=True,
         label='ENTER YOUR EMAIL',
